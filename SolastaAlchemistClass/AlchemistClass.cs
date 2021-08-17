@@ -34,29 +34,28 @@ namespace SolastaAlchemistClass
         static public FeatureDefinitionAdditionalDamage vivisectionist_sneak_attack;
         static public NewFeatureDefinitions.ReplaceWeaponAbilityScoreForRangedOrFinessableWeapons knowledge_of_anatomy;
         static public FeatureDefinitionAutoPreparedSpells vivisectionist_spells;
+        static public FeatureDefinitionPower homunculus_destroy_self;
         static public FeatureDefinitionFeatureSet summon_homunculus;
         static public NewFeatureDefinitions.PowerWithRestrictions death_strike;
-        //Bomber
+        //Grenadier
+        //proficency with enchanting tool
+        //Eldritch Bomb: can use a number of times equal to alch level + int modifier per long rest
+        //Fire Blast - 2d8 fire damage, Dex save for 1/2
+        //Force charge - 2d8 force damage ranged spell attack
+        //Protective Burst 1d8 + int modifier temporary HP
+        //Lvl 5: + int modifier to evocation spells
+        //Lvl 9 + 1d8 to all bombs
+        //bonus spells
         //
-        //breath bomb
-        //force bomb
-        //protective bomb
+        //
         //Rune master
         //Proficiency with all armor and weapons
+        //Weapons use int and can be used as a focus
         //inscribe runes on armor/weapon
-        //Weapon Runes: + 1d6 damage once per turn, distracting weapon, alchemical rune (use int on attack/damage)
+        //Weapon Runes: + 1d6 force damage once per turn, distracting weapon
         //Armor runes: protection rune, silencing rune, speed rune
         //Lvl 5: second attack
         //Lvl 9: +1 rune
-        //Alchemical mutagens
-        //1 - 6. Strength, Dex, Con, Int, Wis, Cha mutagens
-        //7 - 11. Resistances: cold, fire, electricity, acid, necrotic
-        //12 - 14. Physical resistances: bludgeoning, piercing, slashing
-        //15 - darkvision (6 +)
-        //16 - speed bonus
-        //17 - critical hit immunity (10 +)
-        //18 - critical hit threshold (10 +)
-        //19 - fast metabolism (immunity to poison)
 
         protected AlchemistClassBuilder(string name, string guid) : base(name, guid)
         {
@@ -344,6 +343,7 @@ namespace SolastaAlchemistClass
             var eff = new EffectDescription();
             eff.Copy(DatabaseHelper.FeatureDefinitionPowers.PowerDomainBattleDivineWrath.effectDescription);
             eff.effectForms.Clear();
+            eff.durationType = RuleDefinitions.DurationType.Instantaneous;
             eff.targetSide = RuleDefinitions.Side.Ally;
             eff.rangeType = RuleDefinitions.RangeType.Distance;
             eff.SetTargetType(RuleDefinitions.TargetType.Individuals);
@@ -637,9 +637,9 @@ namespace SolastaAlchemistClass
                                                                                                             a.powers = mutagen_powers;
                                                                                                             a.characterClass = alchemist_class;
                                                                                                             a.levelIncreaseList = new List<(int, int)>();
-                                                                                                            for (int i = 5; i <= 20; i+= 4)
+                                                                                                            for (int i = 6; i <= 20; i+= 4)
                                                                                                             {
-                                                                                                                a.levelIncreaseList.Add((i, (i - 2) / 4));
+                                                                                                                a.levelIncreaseList.Add((i, 1));
                                                                                                             }
                                                                                                         }
                                                                                                        );
@@ -728,7 +728,7 @@ namespace SolastaAlchemistClass
                                                                             Helpers.Stats.Intelligence,
                                                                             Helpers.Stats.Intelligence,
                                                                             1,
-                                                                            true
+                                                                            false
                                                                             );
             power.linkedPower = base_mutagen;
             mutagen_powers.Add(power);
@@ -761,6 +761,7 @@ namespace SolastaAlchemistClass
             effect.SetSavingThrowDifficultyAbility(Helpers.Stats.Intelligence);
             effect.SavingThrowAbility = Helpers.Stats.Intelligence;
             effect.hasSavingThrow = false;
+            effect.effectParticleParameters.impactParticleReference = DatabaseHelper.FeatureDefinitionPowers.PowerVampiricTouchIntelligence.effectDescription.effectParticleParameters.impactParticleReference;
             effect.SetDifficultyClassComputation(RuleDefinitions.EffectDifficultyClassComputation.AbilityScoreAndProficiency);
             effect.EffectForms.Clear();
 
@@ -838,6 +839,37 @@ namespace SolastaAlchemistClass
 
         static void createSummonHomunculus()
         {
+            var destroy_effect_description = new EffectDescription();
+            destroy_effect_description.Copy(DatabaseHelper.SpellDefinitions.Banishment.EffectDescription);
+            destroy_effect_description.SetDurationType(RuleDefinitions.DurationType.Instantaneous);
+            destroy_effect_description.durationParameter = 0;
+            destroy_effect_description.rangeType = RuleDefinitions.RangeType.Self;
+            destroy_effect_description.effectForms.Clear();
+            destroy_effect_description.rangeParameter = 1;
+            destroy_effect_description.SetTargetSide(RuleDefinitions.Side.Ally);
+            destroy_effect_description.targetType = RuleDefinitions.TargetType.Self;
+            destroy_effect_description.hasSavingThrow = false;
+            destroy_effect_description.effectForms.Clear();
+
+            var destroy_self_form = new EffectForm();
+            destroy_self_form.formType = EffectForm.EffectFormType.Kill;
+            destroy_self_form.killForm = new KillForm();
+            destroy_self_form.killForm.killCondition = RuleDefinitions.KillCondition.Always;
+            destroy_effect_description.effectForms.Add(destroy_self_form);
+
+            homunculus_destroy_self = Helpers.GenericPowerBuilder<NewFeatureDefinitions.PowerWithRestrictions>
+                                                        .createPower("AlchemistVivisectionistSubclassSummonHomunculusDestroySelfPower",
+                                                                    "",
+                                                                    "Feature/&AlchemistVivisectionistSubclassHomunculusDestroySelfPowerTitle",
+                                                                    "Feature/&AlchemistVivisectionistSubclassHomunculusDestroySelfPowerDescription",
+                                                                    DatabaseHelper.FeatureDefinitionPowers.PowerDomainBattleDivineWrath.GuiPresentation.spriteReference,
+                                                                    destroy_effect_description,
+                                                                    RuleDefinitions.ActivationTime.Action,
+                                                                    1,
+                                                                    RuleDefinitions.UsesDetermination.Fixed,
+                                                                    RuleDefinitions.RechargeRate.AtWill
+                                                                    );
+
             var uncontrolled_action_feature = Helpers.CopyFeatureBuilder<FeatureDefinitionActionAffinity>.createFeatureCopy("AlchemistVivisectionistSubclassHomunculusUncontrolledActionFeature",
                                                                                                                      "",
                                                                                                                      "",
@@ -884,6 +916,7 @@ namespace SolastaAlchemistClass
             control_effect_description.rangeParameter = 1;
             control_effect_description.SetTargetSide(RuleDefinitions.Side.Ally);
             control_effect_description.targetType = RuleDefinitions.TargetType.Self;
+            control_effect_description.hasSavingThrow = false;
             control_effect_description.effectForms.Clear();
 
             var control_form = new EffectForm();
@@ -951,10 +984,10 @@ namespace SolastaAlchemistClass
                                                                           null,
                                                                           DatabaseHelper.ConditionDefinitions.ConditionDummy,
                                                                           attack_damage_bonus,
-                                                                          hp_bonus,
                                                                           control_watcher
                                                                           );
             mark_condition.terminateWhenRemoved = true;
+            hp_bonus.requiredCondition = mark_condition;
 
             var condition_summoned = Helpers.ConditionBuilder.createCondition("AlchemistVivisectionistSubclassHomunculusSummonedCondition",
                                                                               "",
@@ -1024,6 +1057,7 @@ namespace SolastaAlchemistClass
                                                                                 false,
                                                                                 FeatureDefinitionFeatureSet.FeatureSetMode.Union,
                                                                                 false,
+                                                                                hp_bonus,
                                                                                 control_power,
                                                                                 summon_homunculus_power
                                                                                 );
@@ -1109,7 +1143,8 @@ namespace SolastaAlchemistClass
                                                                                                      DatabaseHelper.FeatureDefinitionSenses.SenseNormalVision,
                                                                                                      DatabaseHelper.FeatureDefinitionSenses.SenseDarkvision,
                                                                                                      DatabaseHelper.FeatureDefinitionConditionAffinitys.ConditionAffinityCharmImmunity,
-                                                                                                     DatabaseHelper.FeatureDefinitionActionAffinitys.ActionAffinityFightingStyleProtection
+                                                                                                     DatabaseHelper.FeatureDefinitionActionAffinitys.ActionAffinityFightingStyleProtection,
+                                                                                                     homunculus_destroy_self
                                                                                                  };
                                                                                                  a.attackIterations = new List<MonsterAttackIteration>
                                                                                                  {
@@ -1121,6 +1156,7 @@ namespace SolastaAlchemistClass
                                                                                                  };
                                                                                                  a.characterFamily = "Monstrosity";
                                                                                                  a.challengeRating = (level / 2);
+                                                                                                 a.droppedLootDefinition = null;
                                                                                              }
                                                                                              );
             homunculus.bestiaryEntry = BestiaryDefinitions.BestiaryEntry.None;

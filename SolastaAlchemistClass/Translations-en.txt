@@ -55,7 +55,7 @@ Feature/&AlchemistClassMutagenPoisonImmunityTitle	Poison Immunity Mutagen
 Feature/&AlchemistClassMutagenPoisonImmunityDescription	The target gains immunity to poison.
 Feature/&AlchemistClassMutagenSpiderClimbTitle	Spider Climbing Mutagen
 Feature/&AlchemistClassMutagenSpiderClimbDescription	The target gains ability to climb walls like a spider.
-Feature/&AlchemistClassMutagenSpiderClimbTitle	Critical Hit Immunity Mutagen
+Feature/&AlchemistClassMutagenCriticalHitImmunityTitle	Critical Hit Immunity Mutagen
 Feature/&AlchemistClassMutagenCriticalHitImmunityDescription	The target gains immunity to critical hits.
 Feature/&AlchemistClassCraftingExpertiseTitle Crafting Expertise
 Feature/&AlchemistClassCraftingExpertiseDescription	At 6th level, your proficiency bonus is now doubled for any ability check you make that uses your proficiency with a crafting tool.
@@ -63,20 +63,22 @@ Feature/&AlchemistClassCraftingAdeptTitle	Crafting Adept
 Feature/&AlchemistClassCraftingAdeptDescription	When you reach 10th level, you achieve a profound understanding of how to craft items using your tools. You need half the normal time to craft items.
 Feature/&AlchemistClassFlashOfGeniusTitle Flash of Genius
 Feature/&AlchemistClassFlashOfGeniusDescription	At 7th level, you've gained the ability to come up with solutions under pressure. When you or another creature you can see within 30 feet of you makes an ability check or a saving throw, you can use your reaction to add your Intelligence modifier to the roll./nYou can use this feature a number of times equal to your Intelligence modifier (minimum of once). You regain all expended uses when you finish a long rest.
-Reaction/&ConsumePowerUseAlchemistClassFlashOfGeniusDescription	You or your ally is about to fail a saving throw against {0}. You can spend an inspirtion to add the inspiration die to the resulting roll.
+Reaction/&ConsumePowerUseAlchemistClassFlashOfGeniusDescription	{2} is about to fail a saving throw against {0}. You can spend one use of your Flash of Genius ability to add your INT modifier to the resulting roll.
 Reaction/&ConsumePowerUseAlchemistClassFlashOfGeniusReactDescription Use Flash of Genius
 Subclass/&AlchemistSubclassSpecializationVivisectionistTitle Vivisectionist
 Subclass/&AlchemistSubclassSpecializationVivisectionistDescription	Vivisectionist is and alchemist devoted to study of anatomy and other bodily functions in order to discover the secrets of life and death. Although the methods they use might not be appreciated by majority of people, no one denies their expertise in healing the gravest wounds, and striking where it hurts most. 
 Feature/&AlchemistSubclassBonusSpells Bonus Spells
 Screen/&SpecializationSpellDescription	This specialization spell is always considered prepared.\nIt does not count towards your spell preparation limit. 
 Screen/&SpecializationSpellTitle	Specialization
-Feature/&AlchemistVivisectionistSubclassBonusProficienciesTitle Tools of Trade
+Feature/&AlchemistVivisectionistSubclassBonusProficienciesTitle Tools of the Trade
 Feature/&AlchemistVivisectionistSubclassBonusProficienciesDescription You gain proficiency with Poisoner's Kit, Longswords, Rapiers and Shortswords.
 Feature/&AlchemistVivisectionistSubclassSneakAttackDescription	1d6 extra damage (+1d6 for every 2 levels beyond the 3rd) to one creature you hit with advantage using a finesse or ranged weapon, once per turn. No need for advantage if an active ally is next to the target.
 Feature/&AlchemistVivisectionistSubclassKnowledgeOfAnatomyTitle	Surgical Precision
 Feature/&AlchemistVivisectionistSubclassKnowledgeOfAnatomyDescription	You can use your Intelligence modifier, instead of Dexterity modifier, for the attack and damage rolls with Finesse or Ranged weapons.
 Monster/&HomunculusDescription	A monstorsity created by vivisectionist.\nSTR 14, DEX 12, CON 14, INT 4, WIS 10, CHA 6, AC 15, HP 2 + Master's INT + 5 times Alchemist Level, PB is equal to Master's Proficiency Bonus,\nSaving Throws: DEX 1 + PB, CON 2 +PB\nSkills: Athletics 2 + PB, Perception PB x 2,\nFeatures: Poison Immunity, Charm Immunity,\nAttacks:\nSlam: Master's spell attack modifier, (1d8 + PB necrotic damage),\nReactions:\nDeflect Attack: The servant imposes disadvantage on the attack roll of one creature it can see that is within 5 feet of it, provided the attack roll is against a creature other than the defender.
 Monster/&HomunculusTitle	Flesh Servant
+Feature/&AlchemistVivisectionistSubclassHomunculusDestroySelfPowerTitle	Destroy Self
+Feature/&AlchemistVivisectionistSubclassHomunculusDestroySelfPowerDescription	Flesh servant falls apart.
 Feature/&AlchemistVivisectionistSubclassSummonHomunculusPowerTitle	Flesh Servant
 Feature/&AlchemistVivisectionistSubclassSummonHomunculusPowerDescription	By 5th level, your understaning of living creatures biology allows you to create a semblance of life. By expending a spell slot you can create a creature consisting of flesh of your fallen enemies (or allies).\nIn combat, Flesh Servant can move and use its reaction on its own, but the only action it takes on its turn is the Dodge action, unless you take a bonus action on your turn to command it to take another action. That action can be one in its stat block or some other action. If you are incapacitated, the defender can take any action of its choice, not just Dodge.
 Feature/&AlchemistVivisectionistSubclassSummonHomunculusControlPowerTitle	Control Flesh Servant
