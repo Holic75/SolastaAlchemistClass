@@ -72,7 +72,7 @@ Screen/&SpecializationSpellDescription	This specialization spell is always consi
 Screen/&SpecializationSpellTitle	Specialization
 Feature/&AlchemistVivisectionistSubclassBonusProficienciesTitle Tools of the Trade
 Feature/&AlchemistVivisectionistSubclassBonusProficienciesDescription You gain proficiency with Poisoner's Kit, Longswords, Rapiers and Shortswords.
-Feature/&AlchemistVivisectionistSubclassSneakAttackDescription	1d6 extra damage (+1d6 for every 2 levels beyond the 3rd) to one creature you hit with advantage using a finesse or ranged weapon, once per turn. No need for advantage if an active ally is next to the target.
+Feature/&AlchemistVivisectionistSubclassSneakAttackDescription	1d6 extra damage (+1d6 for every 3 levels beyond the 3rd) to one creature you hit with advantage using a finesse or ranged weapon, once per turn. No need for advantage if an active ally is next to the target.
 Feature/&AlchemistVivisectionistSubclassKnowledgeOfAnatomyTitle	Surgical Precision
 Feature/&AlchemistVivisectionistSubclassKnowledgeOfAnatomyDescription	You can use your Intelligence modifier, instead of Dexterity modifier, for the attack and damage rolls with Finesse or Ranged weapons.
 Monster/&HomunculusDescription	A monstorsity created by vivisectionist.\nSTR 14, DEX 12, CON 14, INT 4, WIS 10, CHA 6, AC 15, HP 2 + Master's INT + 5 times Alchemist Level, PB is equal to Master's Proficiency Bonus,\nSaving Throws: DEX 1 + PB, CON 2 +PB\nSkills: Athletics 2 + PB, Perception PB x 2,\nFeatures: Poison Immunity, Charm Immunity,\nAttacks:\nSlam: Master's spell attack modifier, (1d8 + PB necrotic damage),\nReactions:\nDeflect Attack: The servant imposes disadvantage on the attack roll of one creature it can see that is within 5 feet of it, provided the attack roll is against a creature other than the defender.
@@ -88,3 +88,24 @@ Rules/&AlchemistVivisectionistSubclassHomunculusUncontrolledConditionDescription
 Feature/&AlchemistVivisectionistSubclassDeathStrikeDamageTitle	Death Attack
 Feature/&AlchemistVivisectionistSubclassDeathStrikeDamageDescription	At 9th level, you learn new ways to inflict grave wounds. When you hit a target with a weapon attack you can channel the necrotic energy through your weapons and inflict an extra 2d6 points of damage.\nYou can use this ability a number of times equal to your Intelligence modifier, but you can do so no more than once on a turn. You regain all expended uses when you finish a long rest.
 Reaction/&SpendAlchemistVivisectionistSubclassDeathStrikeDamagePowerReactDescription	Deal an extra 2d6 points of necrotic damage to the target.
+Subclass/&AlchemistSubclassSpecializationGrenadierTitle	Grenadier
+Subclass/&AlchemistSubclassSpecializationGrenadierDescription	Grenadiers are fanatic demolition experts. They specialize in using magic to hurl energy, projectiles, and explosions on a battlefield.
+Feature/&AlchemistGrenadierSubclassBonusProficienciesTitle	Tools of the Trade
+Feature/&AlchemistGrenadierSubclassBonusProficienciesDescription	When you adopt this specialization at 3rd level, you gain proficiency with Scroll Kit.
+Feature/&AlchemistGrenadierSubclassBombsFeatureSetTitle	Eldritch Grenades
+Feature/&AlchemistGrenadierSubclassBombsFeatureSetDescription	At 3rd level you become adept at swiftly mixing various volatile chemicals and infusing them with your magic to create powerful grenades, that you can hurl at your enemies. You can create a total number of grenades equal to half your alchemsit level + your INT modifier after finishing long rest. You can use grenade as a bonus action.
+Feature/&AlchemistGrenadierSubclassPowerfulBombsFeatureSetTitle	Powerful Grenades
+Feature/&AlchemistGrenadierSubclassPowerfulBombsFeatureSetDescription	The damage (or amount of temporary HP) of your grenades increases by 1d8.
+Feature/&AlchemistGrenadierSubclassFlameBlastPowerTitle Flame Blast
+Feature/&AlchemistGrenadierSubclassFlameBlast2PowerDescription	You create a flame explosion in an adjacent 15-foot cone. Each creature in that area must make a Dexterity saving throw against your spell save DC, taking 2d8 fire damage on a failed save or half as much damage on a successful one.
+Feature/&AlchemistGrenadierSubclassFlameBlast3PowerDescription	You create a flame explosion in an adjacent 15-foot cone. Each creature in that area must make a Dexterity saving throw against your spell save DC, taking 3d8 fire damage on a failed save or half as much damage on a successful one.
+Feature/&AlchemistGrenadierSubclassForceGrenadePowerTitle	Force Arrow
+Feature/&AlchemistGrenadierSubclassForceGrenade2PowerDescription	You launch a ranged spell attack at a creature within 120 feet. On a hit, the target takes 2d8 force damage, and is pushed up to 5 feet away from you.
+Feature/&AlchemistGrenadierSubclassForceGrenade3PowerDescription	You launch a ranged spell attack at a creature within 120 feet. On a hit, the target takes 3d8 force damage, and is pushed up to 5 feet away from you.
+Feature/&AlchemistGrenadierSubclassProtectiveBurstPowerTitle	Healing Grenade
+Feature/&AlchemistGrenadierSubclassProtectiveBurst2PowerDescription	You emit a burst of positive energy that grants you and all your allies within 10 feet of it a number of temporary hit points equal to 1d8 + your Intelligence modifier.
+Feature/&AlchemistGrenadierSubclassProtectiveBurst3PowerDescription	You emit a burst of positive energy that grants you and all your allies within 10 feet of it a number of temporary hit points equal to 2d8 + your Intelligence modifier.
+Feature/&AlchemistGrenadierSubclassDestructionAffinityTitle	Destruction Specialist
+Feature/&AlchemistGrenadierSubclassDestructionAffinityDescription You add 1d8 to all your evocation spells damage.
+Feedback/&AdditionalDamageAlchemistGrenadierSubclassDestructionAffinityLine	Extra 1d8 damage due to Destruction Specialist
+Feedback/&AdditionalDamageAlchemistGrenadierSubclassDestructionAffinityFormat	Destruction Specialist

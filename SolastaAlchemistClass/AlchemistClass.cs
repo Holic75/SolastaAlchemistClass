@@ -38,7 +38,12 @@ namespace SolastaAlchemistClass
         static public FeatureDefinitionFeatureSet summon_homunculus;
         static public NewFeatureDefinitions.PowerWithRestrictions death_strike;
         //Grenadier
-        //proficency with enchanting tool
+        static public FeatureDefinitionFeatureSet grenadier_proficiencies;
+        static public FeatureDefinitionAutoPreparedSpells grenadier_spells;
+        static public FeatureDefinitionFeatureSet bombs;
+        static public FeatureDefinitionAdditionalDamage destruction_affinity;
+        static public FeatureDefinitionFeatureSet powerful_bombs;
+        //scribing scrolls
         //Eldritch Bomb: can use a number of times equal to alch level + int modifier per long rest
         //Fire Blast - 2d8 fire damage, Dex save for 1/2
         //Force charge - 2d8 force damage ranged spell attack
@@ -1218,15 +1223,12 @@ namespace SolastaAlchemistClass
                                                                                                                           a =>
                                                                                                                           {
                                                                                                                               a.diceByRankTable = Helpers.Misc.createDiceRankTable(20,
-                                                                                                                                                                                   (4, 1),
-                                                                                                                                                                                   (6, 2),
-                                                                                                                                                                                   (8, 3),
-                                                                                                                                                                                   (10, 4),
-                                                                                                                                                                                   (12, 5),
-                                                                                                                                                                                   (14, 6),
-                                                                                                                                                                                   (16, 7),
-                                                                                                                                                                                   (18, 8),
-                                                                                                                                                                                   (20, 9)
+                                                                                                                                                                                   (5, 1),
+                                                                                                                                                                                   (8, 2),
+                                                                                                                                                                                   (11, 3),
+                                                                                                                                                                                   (14, 4),
+                                                                                                                                                                                   (17, 5),
+                                                                                                                                                                                   (20, 6)
                                                                                                                                                                                    );
                                                                                                                           }
                                                                                                                           );
@@ -1261,6 +1263,276 @@ namespace SolastaAlchemistClass
 
 
 
+        static CharacterSubclassDefinition createGrenadier()
+        {
+            createGrenadierProficiencies();
+            createGrenadierSpells();
+            createGrenadierBombs();
+            createDestructionAffinity();
+            var gui_presentation = new GuiPresentationBuilder(
+                    "Subclass/&AlchemistSubclassSpecializationGrenadierDescription",
+                    "Subclass/&AlchemistSubclassSpecializationGrenadierTitle")
+                    .SetSpriteReference(DatabaseHelper.CharacterSubclassDefinitions.TraditionShockArcanist.GuiPresentation.SpriteReference)
+                    .Build();
+
+            CharacterSubclassDefinition definition = new CharacterSubclassDefinitionBuilder("AlchemistSubclassSpecializationGrenadier", "7cee2f03-145b-447c-be2f-5637d56b6818")
+                                                                                            .SetGuiPresentation(gui_presentation)
+                                                                                            .AddFeatureAtLevel(grenadier_spells, 3)
+                                                                                            .AddFeatureAtLevel(grenadier_proficiencies, 3)
+                                                                                            .AddFeatureAtLevel(bombs, 3)
+                                                                                            .AddFeatureAtLevel(destruction_affinity, 5)
+                                                                                            .AddFeatureAtLevel(powerful_bombs, 9)
+                                                                                            .AddToDB();
+
+            return definition;
+        }
+
+
+        static void createDestructionAffinity()
+        {
+            destruction_affinity = Helpers.CopyFeatureBuilder<FeatureDefinitionAdditionalDamage>.createFeatureCopy("AlchemistGrenadierSubclassDestructionAffinity",
+                                                                                                                   "",
+                                                                                                                   "Feature/&AlchemistGrenadierSubclassDestructionAffinityTitle",
+                                                                                                                   "Feature/&AlchemistGrenadierSubclassDestructionAffinityDescription",
+                                                                                                                   null,
+                                                                                                                   DatabaseHelper.FeatureDefinitionAdditionalDamages.AdditionalDamageTraditionShockArcanistArcaneFury,
+                                                                                                                   a =>
+                                                                                                                   {
+                                                                                                                       a.notificationTag = "AlchemistGrenadierSubclassDestructionAffinity";
+                                                                                                                       a.damageValueDetermination = RuleDefinitions.AdditionalDamageValueDetermination.Die;
+                                                                                                                       a.damageDieType = RuleDefinitions.DieType.D8;
+                                                                                                                       a.damageDiceNumber = 1;
+                                                                                                                       a.damageAdvancement = RuleDefinitions.AdditionalDamageAdvancement.None;
+                                                                                                                   }
+                                                                                                                   );
+        }
+
+
+        static void createGrenadierBombs()
+        {
+            bombs = Helpers.FeatureSetBuilder.createFeatureSet("AlchemistGrenadierSubclassBombsFeatureSet",
+                                                                "",
+                                                                "Feature/&AlchemistGrenadierSubclassBombsFeatureSetTitle",
+                                                                "Feature/&AlchemistGrenadierSubclassBombsFeatureSetDescription",
+                                                                true,
+                                                                FeatureDefinitionFeatureSet.FeatureSetMode.Union,
+                                                                false
+                                                                );
+
+            /*Helpers.StringProcessing.concatenateStrings("Feature/&AlchemistGrenadierSubclassBombsFeatureCompleteSetDescription",
+                                                        ("Feature/&AlchemistGrenadierSubclassBombsFeatureSetDescription", "\n"),
+                                                        ("Feature/&AlchemistGrenadierSubclassFlameBlastTitle", ":\n"),
+                                                        ("Feature/&AlchemistGrenadierSubclassFlameBlast2Description", "\n\n"),
+                                                        ("Feature/&AlchemistGrenadierSubclassForceGrenadeTitle", ":\n"),
+                                                        ("Feature/&AlchemistGrenadierSubclassForceGrenade2Description", "\n\n"),
+                                                        ("Feature/&AlchemistGrenadierSubclassProtectiveBurstTitle", ":\n"),
+                                                        ("Feature/&AlchemistGrenadierSubclassProtectiveBurst2Description", "")
+                                                        );*/
+
+            powerful_bombs = Helpers.FeatureSetBuilder.createFeatureSet("AlchemistGrenadierSubclassPowerfulBombsFeatureSet",
+                                                                        "",
+                                                                        "Feature/&AlchemistGrenadierSubclassPowerfulBombsFeatureSetTitle",
+                                                                        "Feature/&AlchemistGrenadierSubclassPowerfulBombsFeatureSetDescription",
+                                                                        false,
+                                                                        FeatureDefinitionFeatureSet.FeatureSetMode.Union,
+                                                                        false
+                                                                        );
+
+            var bomb_features = new Dictionary<int, FeatureDefinitionFeatureSet>()
+            {
+                {2, bombs},
+                {3, powerful_bombs}
+            };
+            var flame_blast_effects = new Dictionary<int, EffectDescription>();
+            var force_blast_effects = new Dictionary<int, EffectDescription>();
+            var protective_burst_effects = new Dictionary<int, EffectDescription>();
+
+            foreach (var i in bomb_features.Keys)
+            {
+                var effect = new EffectDescription();
+                effect.Copy(DatabaseHelper.SpellDefinitions.BurningHands.effectDescription);
+                effect.savingThrowAbility = Helpers.Stats.Intelligence;
+                effect.effectForms.Clear();
+                effect.effectAdvancement.Clear();
+                var form = new EffectForm();
+                form.formType = EffectForm.EffectFormType.Damage;
+                form.hasSavingThrow = true;
+                form.savingThrowAffinity = RuleDefinitions.EffectSavingThrowType.HalfDamage;
+                form.damageForm = new DamageForm();
+                form.damageForm.damageType = Helpers.DamageTypes.Fire;
+                form.damageForm.dieType = RuleDefinitions.DieType.D8;
+                form.damageForm.diceNumber = i;
+                effect.effectAdvancement.Clear();
+                effect.effectForms.Add(form);
+                effect.effectParticleParameters.casterParticleReference = null;
+                flame_blast_effects.Add(i, effect);
+
+                effect = new EffectDescription();
+                effect.Copy(DatabaseHelper.SpellDefinitions.MagicMissile.EffectDescription);
+                effect.SetRangeType(RuleDefinitions.RangeType.RangeHit);
+                effect.SetRangeParameter(24);
+                effect.EffectForms.Clear();
+                effect.effectAdvancement.Clear();
+                effect.targetParameter = 1;
+                effect.effectAdvancement.Clear();
+                form = new EffectForm();
+                form.formType = EffectForm.EffectFormType.Damage;
+                form.hasSavingThrow = false;
+                form.damageForm = new DamageForm();
+                form.damageForm.damageType = Helpers.DamageTypes.Force;
+                form.damageForm.dieType = RuleDefinitions.DieType.D8;
+                form.damageForm.diceNumber = i;
+                effect.effectForms.Add(form);
+                form = new EffectForm();
+                form.formType = EffectForm.EffectFormType.Motion;
+                form.hasSavingThrow = false;
+                form.motionForm = new MotionForm();
+                form.motionForm.distance = 1;
+                form.motionForm.type = MotionForm.MotionType.PushFromOrigin;
+                effect.effectForms.Add(form);
+                effect.effectParticleParameters.casterParticleReference = null;
+                force_blast_effects.Add(i, effect);
+
+                effect = new EffectDescription();
+                effect.Copy(DatabaseHelper.FeatureDefinitionPowers.PowerClericTurnUndead.EffectDescription);
+                effect.DurationParameter = 1;
+                effect.SetRangeType(RuleDefinitions.RangeType.Self);
+                effect.SetTargetSide(RuleDefinitions.Side.Ally);
+                effect.SetRangeParameter(1);
+                effect.SetTargetParameter(2);
+                effect.SetTargetParameter(2);
+                effect.SetTargetProximityDistance(6);
+                effect.hasSavingThrow = false;
+                effect.restrictedCreatureFamilies = new List<string>();
+                effect.DurationType = RuleDefinitions.DurationType.Instantaneous;
+                effect.SetTargetType(RuleDefinitions.TargetType.Sphere);
+                effect.EffectForms.Clear();
+                effect.effectAdvancement.Clear();
+                form = new EffectForm();
+                form.temporaryHitPointsForm = new TemporaryHitPointsForm();
+                form.FormType = EffectForm.EffectFormType.TemporaryHitPoints;
+                form.temporaryHitPointsForm.diceNumber = i - 1;
+                form.temporaryHitPointsForm.dieType = RuleDefinitions.DieType.D8;
+                form.applyAbilityBonus = true;
+                effect.EffectForms.Add(form);
+                //effect.effectParticleParameters.casterParticleReference = null;
+                protective_burst_effects.Add(i, effect);
+            }
+
+            var bomb_data = new List<(string prefix, Dictionary<int, EffectDescription> effects, AssetReferenceSprite sprite)>
+            {
+                    ("FlameBlast", flame_blast_effects, DatabaseHelper.FeatureDefinitionPowers.PowerDomainElementalFireBurst.guiPresentation.spriteReference),
+                    ("ForceGrenade", force_blast_effects, DatabaseHelper.FeatureDefinitionPowers.PowerSorcererManaPainterTap.guiPresentation.spriteReference),
+                    ("ProtectiveBurst", protective_burst_effects, DatabaseHelper.FeatureDefinitionPowers.PowerRangerPrimevalAwareness.guiPresentation.spriteReference),
+            };
+
+            List<FeatureDefinitionPower> all_powers = new List<FeatureDefinitionPower>();
+            foreach (var bd in bomb_data)
+            {
+                FeatureDefinitionPower first_power = null;
+                foreach (var dice_num in bd.effects.Keys)
+                {
+                    var power = Helpers.GenericPowerBuilder<NewFeatureDefinitions.PowerWithRestrictions>.createPower($"AlchemistGrenadierSubclass{bd.prefix}{dice_num}Power",
+                                                                                                                      "",
+                                                                                                                      $"Feature/&AlchemistGrenadierSubclass{bd.prefix}PowerTitle",
+                                                                                                                      $"Feature/&AlchemistGrenadierSubclass{bd.prefix}{dice_num}PowerDescription",
+                                                                                                                      bd.sprite,
+                                                                                                                      bd.effects[dice_num],
+                                                                                                                      RuleDefinitions.ActivationTime.BonusAction,
+                                                                                                                      1,
+                                                                                                                      RuleDefinitions.UsesDetermination.AbilityBonusPlusFixed,
+                                                                                                                      RuleDefinitions.RechargeRate.LongRest,
+                                                                                                                      Helpers.Stats.Intelligence,
+                                                                                                                      Helpers.Stats.Intelligence,
+                                                                                                                      1,
+                                                                                                                      true
+                                                                                                                      );
+                    power.attackHitComputation = RuleDefinitions.PowerAttackHitComputation.AbilityScore;
+                    power.proficiencyBonusToAttack = true;
+                    power.abilityScoreBonusToAttack = true;
+                    if (first_power != null)
+                    {
+                        power.SetOverriddenPower(first_power);
+                    }
+                    first_power = power;
+                    all_powers.Add(power);
+                    bomb_features[dice_num].FeatureSet.Add(power);
+                }
+            }
+
+            var bomb_uses_increase = Helpers.FeatureBuilder<NewFeatureDefinitions.IncreaseNumberOfPowerUsesPerClassLevel>.createFeature("AlchemistGrenadierSubclassBombsUsesIncrease",
+                                                                                                                                        "",
+                                                                                                                                        Common.common_no_title,
+                                                                                                                                        Common.common_no_title,
+                                                                                                                                        Common.common_no_icon,
+                                                                                                                                        a =>
+                                                                                                                                        {
+                                                                                                                                            a.characterClass = alchemist_class;
+                                                                                                                                            a.levelIncreaseList = new List<(int, int)>();
+                                                                                                                                            for (int i = 4; i <= 20; i += 2)
+                                                                                                                                            {
+                                                                                                                                                a.levelIncreaseList.Add((i, 1));
+                                                                                                                                            }
+                                                                                                                                            a.powers = all_powers;
+                                                                                                                                        }
+                                                                                                                                        );
+            bomb_uses_increase.guiPresentation.hidden = true;
+            foreach (var f in bomb_features.Values)
+            {
+                var powers = f.featureSet.Cast<NewFeatureDefinitions.PowerWithRestrictions>().ToArray();
+                for (int i = 1; i < powers.Length; i++)
+                {
+                    powers[i].linkedPower = powers[0];
+                }
+            }
+            bombs.featureSet.Insert(0, bomb_uses_increase);
+        }
+
+
+        static void createGrenadierSpells()
+        {
+            grenadier_spells = Helpers.CopyFeatureBuilder<FeatureDefinitionAutoPreparedSpells>.createFeatureCopy("AlchemistGrenadierSubclassAutopreparedSpells",
+                                                                                                            "",
+                                                                                                            "Feature/&AlchemistSubclassBonusSpells",
+                                                                                                            "Feature/&DomainSpellsDescription",
+                                                                                                            null,
+                                                                                                            DatabaseHelper.FeatureDefinitionAutoPreparedSpellss.AutoPreparedSpellsDomainBattle,
+                                                                                                            a =>
+                                                                                                            {
+                                                                                                                a.autopreparedTag = "Specialization";
+                                                                                                                a.SetSpellcastingClass(alchemist_class);
+                                                                                                                a.autoPreparedSpellsGroups
+                                                                                                                    = new List<FeatureDefinitionAutoPreparedSpells.AutoPreparedSpellsGroup>()
+                                                                                                                    {
+                                                                                                                        Helpers.Misc.createAutopreparedSpellsGroup(3, DatabaseHelper.SpellDefinitions.Shield, DatabaseHelper.SpellDefinitions.Thunderwave),
+                                                                                                                        Helpers.Misc.createAutopreparedSpellsGroup(5, DatabaseHelper.SpellDefinitions.ScorchingRay, DatabaseHelper.SpellDefinitions.Shatter),
+                                                                                                                        Helpers.Misc.createAutopreparedSpellsGroup(9, DatabaseHelper.SpellDefinitions.Fireball, DatabaseHelper.SpellDefinitions.WindWall),
+                                                                                                                        Helpers.Misc.createAutopreparedSpellsGroup(13, DatabaseHelper.SpellDefinitions.IceStorm, DatabaseHelper.SpellDefinitions.WallOfFire),
+                                                                                                                        Helpers.Misc.createAutopreparedSpellsGroup(17, DatabaseHelper.SpellDefinitions.ConeOfCold, DatabaseHelper.SpellDefinitions.CloudKill),
+                                                                                                                    };
+                                                                                                            }
+                                                                                                            );
+        }
+
+
+        static void createGrenadierProficiencies()
+        {
+            var tools_proficiency = Helpers.ProficiencyBuilder.CreateToolsProficiency("AlchemistGrenadierSubclassToolsProficiency",
+                                                                          "",
+                                                                          Common.common_no_title,
+                                                                          Helpers.Tools.ScrollKit
+                                                                          );
+
+            grenadier_proficiencies = Helpers.FeatureSetBuilder.createFeatureSet("AlchemistGRenadierSubclassBonusProficiencies",
+                                                                                            "",
+                                                                                            "Feature/&AlchemistGrenadierSubclassBonusProficienciesTitle",
+                                                                                            "Feature/&AlchemistGrenadierSubclassBonusProficienciesDescription",
+                                                                                            false,
+                                                                                            FeatureDefinitionFeatureSet.FeatureSetMode.Union,
+                                                                                            false,
+                                                                                            tools_proficiency
+                                                                                            );
+        }
 
 
         public static void BuildAndAddClassToDB()
@@ -1273,6 +1545,7 @@ namespace SolastaAlchemistClass
                                          );
 
             AlchemistFeatureDefinitionSubclassChoice.Subclasses.Add(createVivisectionist().Name);
+            AlchemistFeatureDefinitionSubclassChoice.Subclasses.Add(createGrenadier().Name);
         }
 
         private static FeatureDefinitionSubclassChoice AlchemistFeatureDefinitionSubclassChoice;
