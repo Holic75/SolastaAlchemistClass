@@ -43,24 +43,23 @@ namespace SolastaAlchemistClass
         static public FeatureDefinitionFeatureSet bombs;
         static public FeatureDefinitionAdditionalDamage destruction_affinity;
         static public FeatureDefinitionFeatureSet powerful_bombs;
-        //scribing scrolls
-        //Eldritch Bomb: can use a number of times equal to alch level + int modifier per long rest
-        //Fire Blast - 2d8 fire damage, Dex save for 1/2
-        //Force charge - 2d8 force damage ranged spell attack
-        //Protective Burst 1d8 + int modifier temporary HP
-        //Lvl 5: + int modifier to evocation spells
-        //Lvl 9 + 1d8 to all bombs
-        //bonus spells
-        //
-        //
-        //Rune master
+        //Runemaster
+        static public FeatureDefinitionFeatureSet runemaster_proficiencies;
+        static public FeatureDefinitionAutoPreparedSpells runemaster_spells;
+        static public FeatureDefinitionFeatureSet weapon_runes;
+        static public FeatureDefinitionFeatureSet armor_runes;
+        static public List<FeatureDefinitionPower> rune_powers;
         //Proficiency with all armor and weapons
+        //Weapon Runes:
+        //Focus Rune - use int for attack/damage and weapon serves as a casting focus
+        //Destruction Rune - 1d6 force damage 1/round
+        //Distraction Rune - on hit enemies get disadvantage against everyone except you for 1 round
+        //Armor Runes:
+        //Dampening Rune: advantage on stealth
+        //Protection Rune: temporary hp proficiency bonus times
+        //Propulsion Rune: + 10 feet speed bonus
         //Weapons use int and can be used as a focus
-        //inscribe runes on armor/weapon
-        //Weapon Runes: + 1d6 force damage once per turn, distracting weapon
-        //Armor runes: protection rune, silencing rune, speed rune
-        //Lvl 5: second attack
-        //Lvl 9: +1 rune
+        //At lvl 9: +1 armor / weapon rune
 
         protected AlchemistClassBuilder(string name, string guid) : base(name, guid)
         {
@@ -1469,7 +1468,7 @@ namespace SolastaAlchemistClass
                                                                                                                                         {
                                                                                                                                             a.characterClass = alchemist_class;
                                                                                                                                             a.levelIncreaseList = new List<(int, int)>();
-                                                                                                                                            for (int i = 4; i <= 20; i += 2)
+                                                                                                                                            for (int i = 4; i <= 20; i += 1)
                                                                                                                                             {
                                                                                                                                                 a.levelIncreaseList.Add((i, 1));
                                                                                                                                             }
@@ -1523,7 +1522,7 @@ namespace SolastaAlchemistClass
                                                                           Helpers.Tools.ScrollKit
                                                                           );
 
-            grenadier_proficiencies = Helpers.FeatureSetBuilder.createFeatureSet("AlchemistGRenadierSubclassBonusProficiencies",
+            grenadier_proficiencies = Helpers.FeatureSetBuilder.createFeatureSet("AlchemistGrenadierSubclassBonusProficiencies",
                                                                                             "",
                                                                                             "Feature/&AlchemistGrenadierSubclassBonusProficienciesTitle",
                                                                                             "Feature/&AlchemistGrenadierSubclassBonusProficienciesDescription",
@@ -1531,6 +1530,273 @@ namespace SolastaAlchemistClass
                                                                                             FeatureDefinitionFeatureSet.FeatureSetMode.Union,
                                                                                             false,
                                                                                             tools_proficiency
+                                                                                            );
+        }
+
+
+
+        static CharacterSubclassDefinition createRunemaster()
+        {
+            createRunemasterProficiencies();
+            createRunemasterSpells();
+            createWeaponRunes();
+            //createArmorRunes();
+            //createExtraAttack();
+            var gui_presentation = new GuiPresentationBuilder(
+                    "Subclass/&AlchemistSubclassSpecializationRunemasterDescription",
+                    "Subclass/&AlchemistSubclassSpecializationRunemasterTitle")
+                    .SetSpriteReference(DatabaseHelper.CharacterSubclassDefinitions.DomainBattle.GuiPresentation.SpriteReference)
+                    .Build();
+
+            CharacterSubclassDefinition definition = new CharacterSubclassDefinitionBuilder("AlchemistSubclassSpecializationRunemaster", "158fc116-e0ed-4a5d-a754-e5a70eefeb15")
+                                                                                            .SetGuiPresentation(gui_presentation)
+                                                                                            .AddFeatureAtLevel(runemaster_spells, 3)
+                                                                                            .AddFeatureAtLevel(runemaster_proficiencies, 3)
+                                                                                            .AddFeatureAtLevel(weapon_runes, 3)
+                                                                                            //.AddFeatureAtLevel(armor_runes, 3)
+                                                                                            .AddToDB();
+
+            return definition;
+        }
+
+
+        static void createArmorRunes()
+        {
+
+        }
+
+
+        static void createWeaponRunes()
+        {
+            var connection_rune = createWeaponRunePower("AlchemistRunemasterSubclassConnectionRune", DatabaseHelper.FeatureDefinitionPowers.PowerFighterActionSurge.guiPresentation.spriteReference);
+            var use_int_stat_feature = Helpers.FeatureBuilder<NewFeatureDefinitions.ReplaceWeaponAbilityScoreWithHighestStatIfWeaponHasFeature>
+                                                  .createFeature("AlchemistRunemasterSubclassConnectionRuneUseIntStatFeature",
+                                                                 "",
+                                                                 Common.common_no_title,
+                                                                 Common.common_no_title,
+                                                                 Common.common_no_icon,
+                                                                 a =>
+                                                                 {
+                                                                     a.abilityScores = new List<string> { Helpers.Stats.Intelligence};
+                                                                     a.weaponFeature = connection_rune.weapon_feature;
+                                                                 }
+                                                                 );
+
+            var use_weapon_as_spellfocus = Helpers.FeatureBuilder<NewFeatureDefinitions.AllowToUseWeaponWithFeatureAsSpellFocus>
+                                                      .createFeature("AlchemistRunemasterSubclassConnectionRuneSpellFocusFeature",
+                                                                     "",
+                                                                     Common.common_no_title,
+                                                                     Common.common_no_title,
+                                                                     Common.common_no_icon,
+                                                                     a =>
+                                                                     {
+                                                                         a.weaponFeature = connection_rune.weapon_feature;
+                                                                     }
+                                                                     );
+
+            var destruction_rune = createWeaponRunePower("AlchemistRunemasterSubclassDestructionRune", DatabaseHelper.FeatureDefinitionPowers.PowerDomainBattleDecisiveStrike.guiPresentation.spriteReference);
+
+            var destruction_rune_affinity = Helpers.CopyFeatureBuilder<FeatureDefinitionAdditionalDamage>.createFeatureCopy("AlchemistRunemasterSubclassDestructionRuneDestructionAffinity",
+                                                                                                       "",
+                                                                                                       Common.common_no_title,
+                                                                                                       Common.common_no_title,
+                                                                                                       null,
+                                                                                                       DatabaseHelper.FeatureDefinitionAdditionalDamages.AdditionalDamageDomainLifeDivineStrike,
+                                                                                                       a =>
+                                                                                                       {
+                                                                                                           a.notificationTag = "AlchemistRunemasterSubclassDestructionRuneDestructionAffinity";
+                                                                                                           a.damageValueDetermination = RuleDefinitions.AdditionalDamageValueDetermination.Die;
+                                                                                                           a.damageDieType = RuleDefinitions.DieType.D8;
+                                                                                                       }
+                                                                                                       );
+
+            var destruction_rune_condition = Helpers.ConditionBuilder.createConditionWithInterruptions("AlchemistRunemasterSubclassDestructionRuneCondition",
+                                                                                                       "",
+                                                                                                       Common.common_no_title,
+                                                                                                       Common.common_no_title,
+                                                                                                       Common.common_no_icon,
+                                                                                                       DatabaseHelper.ConditionDefinitions.ConditionDummy,
+                                                                                                       new RuleDefinitions.ConditionInterruption[] { RuleDefinitions.ConditionInterruption.Attacks }
+                                                                                                       );
+            destruction_rune_condition.silentWhenAdded = true;
+            destruction_rune_condition.silentWhenRemoved = true;
+            NewFeatureDefinitions.ConditionsData.no_refresh_conditions.Add(destruction_rune_condition);
+
+            var trigger_destruction_rune_feature = Helpers.FeatureBuilder<NewFeatureDefinitions.InitiatorApplyConditionOnAttackToAttackerIfWeaponHasFeature>
+                                          .createFeature("AlchemistRunemasterSubclassDestructionRuneTriggerFeature",
+                                                         "",
+                                                         Common.common_no_title,
+                                                         Common.common_no_title,
+                                                         Common.common_no_icon,
+                                                         a =>
+                                                         {
+                                                             a.condition = destruction_rune_condition;
+                                                             a.durationType = RuleDefinitions.DurationType.Round;
+                                                             a.turnOccurence = RuleDefinitions.TurnOccurenceType.StartOfTurn;
+                                                             a.durationValue = 1;
+                                                             a.weaponFeature = destruction_rune.weapon_feature;
+                                                         }
+                                                         );
+
+            var guardian_rune = createWeaponRunePower("AlchemistRunemasterSubclassGuardianRune", DatabaseHelper.FeatureDefinitionPowers.PowerOathOfDevotionSacredWeapon.guiPresentation.spriteReference);
+
+            var disadvantage_feature = Helpers.FeatureBuilder<NewFeatureDefinitions.AttackDisadvantageAgainstNonCaster>
+                                                  .createFeature("AlchemistRunemasterSubclassGuardianRuneDisadvantageFeature",
+                                                                 "",
+                                                                 Common.common_no_title,
+                                                                 Common.common_no_title,
+                                                                 Common.common_no_icon
+                                                                 );
+
+            var guardian_rune_condition = Helpers.ConditionBuilder.createCondition("AlchemistRunemasterSubclassGuardianRuneCondition",
+                                                                                           "",
+                                                                                           Common.common_no_title,
+                                                                                           Common.common_no_title,
+                                                                                           Common.common_no_icon,
+                                                                                           DatabaseHelper.ConditionDefinitions.ConditionCursedByBestowCurseAttackRoll,
+                                                                                           disadvantage_feature
+                                                                                           );
+            var trigger_guardian_rune_feature = Helpers.FeatureBuilder<NewFeatureDefinitions.InitiatorApplyConditionOnAttackHitToTargetIfWeaponHasFeature>
+                              .createFeature("AlchemistRunemasterSubclassGuardianRuneTriggerFeature",
+                                             "",
+                                             Common.common_no_title,
+                                             Common.common_no_title,
+                                             Common.common_no_icon,
+                                             a =>
+                                             {
+                                                 a.condition = guardian_rune_condition;
+                                                 a.durationType = RuleDefinitions.DurationType.Round;
+                                                 a.turnOccurence = RuleDefinitions.TurnOccurenceType.EndOfTurn;
+                                                 a.durationValue = 1;
+                                                 a.weaponFeature = destruction_rune.weapon_feature;
+                                             }
+                                             );
+            destruction_rune.power.linkedPower = connection_rune.power;
+            guardian_rune.power.linkedPower = connection_rune.power;
+
+            weapon_runes = Helpers.FeatureSetBuilder.createFeatureSet("AlchemistRunemasterSubclassWeaponRunes",
+                                                                                "",
+                                                                                "Feature/&AlchemistRunemasterSubclassWeaponRunesTitle",
+                                                                                "Feature/&AlchemistRunemasterSubclassWeaponRunesDescription",
+                                                                                false,
+                                                                                FeatureDefinitionFeatureSet.FeatureSetMode.Union,
+                                                                                false,
+                                                                                use_int_stat_feature,
+                                                                                use_weapon_as_spellfocus,
+                                                                                trigger_destruction_rune_feature,
+                                                                                trigger_guardian_rune_feature,
+                                                                                connection_rune.power,
+                                                                                destruction_rune.power,
+                                                                                guardian_rune.power
+                                                                                );
+        }
+
+
+        static (NewFeatureDefinitions.PowerWithRestrictions power, FeatureDefinition weapon_feature) createWeaponRunePower(string prefix, AssetReferenceSprite sprite)
+        {
+            var title_string = "Feature/&" + prefix + "Title";
+            var description_string = "Feature/&" + prefix + "Description";
+            var weapon_feature = Helpers.OnlyDescriptionFeatureBuilder.createOnlyDescriptionFeature(prefix + "WeaponFeature",
+                                                                                 "",
+                                                                                 title_string,
+                                                                                 description_string,
+                                                                                 sprite);
+            var effect = new EffectDescription();
+            effect.Copy(DatabaseHelper.SpellDefinitions.MagicWeapon.EffectDescription);
+            effect.EffectForms.Clear();
+            effect.EffectAdvancement.Clear();
+            effect.rangeParameter = 1;
+            effect.durationParameter = 1;
+            effect.itemSelectionType = ActionDefinitions.ItemSelectionType.Weapon;
+            effect.targetType = RuleDefinitions.TargetType.Self;
+            effect.rangeType = RuleDefinitions.RangeType.Self;
+
+            effect.durationType = RuleDefinitions.DurationType.UntilAnyRest;
+
+            var effect_form = new EffectForm();
+            effect_form.itemPropertyForm = new ItemPropertyForm();
+            effect_form.FormType = EffectForm.EffectFormType.ItemProperty;
+            effect_form.itemPropertyForm.featureBySlotLevel = new List<FeatureUnlockByLevel> { new FeatureUnlockByLevel(weapon_feature, 0) };
+            effect.EffectForms.Add(effect_form);
+            effect.effectAdvancement.Clear();
+
+            var power = Helpers.GenericPowerBuilder<NewFeatureDefinitions.PowerWithRestrictions>
+                                                                        .createPower(prefix + "Power",
+                                                                                     "",
+                                                                                     title_string,
+                                                                                     description_string,
+                                                                                     sprite,
+                                                                                     effect,
+                                                                                     RuleDefinitions.ActivationTime.Action,
+                                                                                     1,
+                                                                                     RuleDefinitions.UsesDetermination.Fixed,
+                                                                                     RuleDefinitions.RechargeRate.ShortRest
+                                                                                    );
+            power.restrictions = new List<NewFeatureDefinitions.IRestriction> { new NewFeatureDefinitions.HasWeaponInMainHandWithoutFeature(weapon_feature) };
+
+            rune_powers.Add(power);
+            return (power, weapon_feature);
+        }
+
+
+        static void createRunemasterSpells()
+        {
+            runemaster_spells = Helpers.CopyFeatureBuilder<FeatureDefinitionAutoPreparedSpells>.createFeatureCopy("AlchemistRunemasterSubclassAutopreparedSpells",
+                                                                                                            "",
+                                                                                                            "Feature/&AlchemistSubclassBonusSpells",
+                                                                                                            "Feature/&DomainSpellsDescription",
+                                                                                                            null,
+                                                                                                            DatabaseHelper.FeatureDefinitionAutoPreparedSpellss.AutoPreparedSpellsDomainBattle,
+                                                                                                            a =>
+                                                                                                            {
+                                                                                                                a.autopreparedTag = "Specialization";
+                                                                                                                a.SetSpellcastingClass(alchemist_class);
+                                                                                                                a.autoPreparedSpellsGroups
+                                                                                                                    = new List<FeatureDefinitionAutoPreparedSpells.AutoPreparedSpellsGroup>()
+                                                                                                                    {
+                                                                                                                        Helpers.Misc.createAutopreparedSpellsGroup(3, DatabaseHelper.SpellDefinitions.DivineFavor, DatabaseHelper.SpellDefinitions.Shield),
+                                                                                                                        Helpers.Misc.createAutopreparedSpellsGroup(5, DatabaseHelper.SpellDefinitions.SpiritualWeapon, DatabaseHelper.SpellDefinitions.Shatter),
+                                                                                                                        Helpers.Misc.createAutopreparedSpellsGroup(9, DatabaseHelper.SpellDefinitions.HypnoticPattern, DatabaseHelper.SpellDefinitions.LightningBolt),
+                                                                                                                        Helpers.Misc.createAutopreparedSpellsGroup(13, DatabaseHelper.SpellDefinitions.FireShield, DatabaseHelper.SpellDefinitions.GreaterInvisibility),
+                                                                                                                        Helpers.Misc.createAutopreparedSpellsGroup(17, DatabaseHelper.SpellDefinitions.DispelEvilAndGood, DatabaseHelper.SpellDefinitions.HoldPerson),
+                                                                                                                    };
+                                                                                                            }
+                                                                                                            );
+        }
+
+
+        static void createRunemasterProficiencies()
+        {
+            var tools_proficiency = Helpers.ProficiencyBuilder.CreateToolsProficiency("AlchemistRunemasterSubclassToolsProficiency",
+                                                                                      "",
+                                                                                      Common.common_no_title,
+                                                                                      Helpers.Tools.SmithTool
+                                                                                      );
+
+            var armor_proficiency = Helpers.ProficiencyBuilder.createCopy("AlchemistRunemasterSubclassArmorProficiency",
+                                                                          "",
+                                                                          Common.common_no_title,
+                                                                          "",
+                                                                          DatabaseHelper.FeatureDefinitionProficiencys.ProficiencyFighterArmor
+                                                                          );
+
+            var weapon_proficiency = Helpers.ProficiencyBuilder.createCopy("AlchemistRunemasterSubclassWeaponProficiency",
+                                                                          "",
+                                                                          Common.common_no_title,
+                                                                          "",
+                                                                          DatabaseHelper.FeatureDefinitionProficiencys.ProficiencyFighterWeapon
+                                                                          );
+
+            runemaster_proficiencies = Helpers.FeatureSetBuilder.createFeatureSet("AlchemistRunemasterSubclassBonusProficiencies",
+                                                                                            "",
+                                                                                            "Feature/&AlchemistRunemasterSubclassBonusProficienciesTitle",
+                                                                                            "Feature/&AlchemistRunemasterSubclassBonusProficienciesDescription",
+                                                                                            false,
+                                                                                            FeatureDefinitionFeatureSet.FeatureSetMode.Union,
+                                                                                            false,
+                                                                                            tools_proficiency,
+                                                                                            weapon_proficiency,
+                                                                                            armor_proficiency
                                                                                             );
         }
 
@@ -1544,8 +1810,9 @@ namespace SolastaAlchemistClass
                                           }
                                          );
 
-            AlchemistFeatureDefinitionSubclassChoice.Subclasses.Add(createVivisectionist().Name);
             AlchemistFeatureDefinitionSubclassChoice.Subclasses.Add(createGrenadier().Name);
+            AlchemistFeatureDefinitionSubclassChoice.Subclasses.Add(createRunemaster().Name);
+            AlchemistFeatureDefinitionSubclassChoice.Subclasses.Add(createVivisectionist().Name);
         }
 
         private static FeatureDefinitionSubclassChoice AlchemistFeatureDefinitionSubclassChoice;
