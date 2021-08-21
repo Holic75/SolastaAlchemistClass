@@ -48,7 +48,8 @@ namespace SolastaAlchemistClass
         static public FeatureDefinitionAutoPreparedSpells runemaster_spells;
         static public FeatureDefinitionFeatureSet weapon_runes;
         static public FeatureDefinitionFeatureSet armor_runes;
-        static public List<FeatureDefinitionPower> rune_powers;
+        static public List<FeatureDefinitionPower> rune_powers = new List<FeatureDefinitionPower>();
+        static public NewFeatureDefinitions.IncreaseNumberOfPowerUses rune_specialist;
         //Proficiency with all armor and weapons
         //Weapon Runes:
         //Focus Rune - use int for attack/damage and weapon serves as a casting focus
@@ -1540,8 +1541,15 @@ namespace SolastaAlchemistClass
             createRunemasterProficiencies();
             createRunemasterSpells();
             createWeaponRunes();
-            //createArmorRunes();
-            //createExtraAttack();
+            createArmorRunes();
+            var extra_attack = Helpers.CopyFeatureBuilder<FeatureDefinitionAttributeModifier>.createFeatureCopy("AlchemistRunemasterSubclassExtraAttack",
+                                                                                                               "",
+                                                                                                               "",
+                                                                                                               "",
+                                                                                                               null,
+                                                                                                               DatabaseHelper.FeatureDefinitionAttributeModifiers.AttributeModifierFighterExtraAttack
+                                                                                                               );
+            createRuneSpecialist();
             var gui_presentation = new GuiPresentationBuilder(
                     "Subclass/&AlchemistSubclassSpecializationRunemasterDescription",
                     "Subclass/&AlchemistSubclassSpecializationRunemasterTitle")
@@ -1553,24 +1561,131 @@ namespace SolastaAlchemistClass
                                                                                             .AddFeatureAtLevel(runemaster_spells, 3)
                                                                                             .AddFeatureAtLevel(runemaster_proficiencies, 3)
                                                                                             .AddFeatureAtLevel(weapon_runes, 3)
-                                                                                            //.AddFeatureAtLevel(armor_runes, 3)
+                                                                                            .AddFeatureAtLevel(armor_runes, 3)
+                                                                                            .AddFeatureAtLevel(extra_attack, 5)
+                                                                                            .AddFeatureAtLevel(rune_specialist, 9)
                                                                                             .AddToDB();
 
             return definition;
         }
 
 
+        static void createRuneSpecialist()
+        {
+            rune_specialist = Helpers.FeatureBuilder<NewFeatureDefinitions.IncreaseNumberOfPowerUses>.createFeature("AlchemistRunemasterSubclassRuneSpecialist",
+                                                                                                                    "",
+                                                                                                                    "Feature/&AlchemistRunemasterSubclassRuneSpecialistTitle",
+                                                                                                                    "Feature/&AlchemistRunemasterSubclassRuneSpecialistDescription",
+                                                                                                                    Common.common_no_icon,
+                                                                                                                    a =>
+                                                                                                                    {
+                                                                                                                        a.powers = rune_powers;
+                                                                                                                        a.value = 1;
+                                                                                                                    }
+                                                                                                                    );
+        }
+
+
         static void createArmorRunes()
         {
+            var protection_rune = createArmorRunePower("AlchemistRunemasterSubclassProtectionArmorRune", DatabaseHelper.FeatureDefinitionPowers.PowerOathOfTirmarAuraTruth.guiPresentation.spriteReference);
 
+            var effect = new EffectDescription();
+            effect.Copy(DatabaseHelper.FeatureDefinitionPowers.PowerDomainBattleDivineWrath.EffectDescription);
+            effect.EffectForms.Clear();
+            effect.EffectAdvancement.Clear();
+            
+            var effect_form = new EffectForm();
+            effect_form.createdByCharacter = true;
+            effect_form.applyLevel = EffectForm.LevelApplianceType.Multiply;
+            effect_form.levelMultiplier = 1;
+            effect_form.temporaryHitPointsForm = new TemporaryHitPointsForm();
+            effect_form.FormType = EffectForm.EffectFormType.TemporaryHitPoints;
+            effect_form.temporaryHitPointsForm.diceNumber = 1;
+            effect_form.temporaryHitPointsForm.dieType = RuleDefinitions.DieType.D1;
+            effect.EffectForms.Add(effect_form);
+            effect.effectAdvancement.Clear();
+
+            var protection_rune_power = Helpers.GenericPowerBuilder<NewFeatureDefinitions.PowerWithRestrictions>
+                                                                        .createPower("AlchemistRunemasterSubclassProtectionArmorRuneUsePower",
+                                                                                     "",
+                                                                                     "Feature/&AlchemistRunemasterSubclassProtectionArmorRuneUsePowerTitle",
+                                                                                     "Feature/&AlchemistRunemasterSubclassProtectionArmorRuneUsePowerDescription",
+                                                                                     DatabaseHelper.FeatureDefinitionPowers.PowerDomainBattleDivineWrath.GuiPresentation.spriteReference,
+                                                                                     effect,
+                                                                                     RuleDefinitions.ActivationTime.BonusAction,
+                                                                                     1,
+                                                                                     RuleDefinitions.UsesDetermination.ProficiencyBonus,
+                                                                                     RuleDefinitions.RechargeRate.LongRest
+                                                                                    );
+            protection_rune_power.restrictions = new List<NewFeatureDefinitions.IRestriction> { new NewFeatureDefinitions.WearingArmorWithFeature(protection_rune.armor_feature) };
+
+            var dampening_rune = createArmorRunePower("AlchemistRunemasterSubclassDampeningArmorRune", DatabaseHelper.FeatureDefinitionPowers.PowerOathOfDevotionAuraDevotion.guiPresentation.spriteReference);
+
+            var stealth_advantage = Helpers.AbilityCheckAffinityBuilder.createSkillCheckAffinity("AlchemistRunemasterSubclassDampeningArmorRuneStealthAdvantageFeature",
+                                                                                                 "",
+                                                                                                 Common.common_no_title,
+                                                                                                 Common.common_no_title,
+                                                                                                 Common.common_no_icon,
+                                                                                                 RuleDefinitions.CharacterAbilityCheckAffinity.Advantage,
+                                                                                                 0,
+                                                                                                 RuleDefinitions.DieType.D1,
+                                                                                                 Helpers.Skills.Stealth
+                                                                                                 );
+
+            var trigger_stealth_advantage = Helpers.FeatureBuilder<NewFeatureDefinitions.AbilityCheckAffinityUnderRestriction>
+                                                                  .createFeature("AlchemistRunemasterSubclassConnectionDampeningArmorRuneTriggerFeature",
+                                                                                 "",
+                                                                                 Common.common_no_title,
+                                                                                 Common.common_no_title,
+                                                                                 Common.common_no_icon,
+                                                                                 a =>
+                                                                                 {
+                                                                                     a.feature = stealth_advantage;
+                                                                                     a.restrictions.Add(new NewFeatureDefinitions.WearingArmorWithFeature(dampening_rune.armor_feature));
+                                                                                 }
+                                                                                 );
+
+            var propulsion_rune = createArmorRunePower("AlchemistRunemasterSubclassPropulsionArmorRune", DatabaseHelper.FeatureDefinitionPowers.PowerOathOfMotherlandVolcanicAura.guiPresentation.spriteReference);
+
+            var trigger_speed_bonus = Helpers.FeatureBuilder<NewFeatureDefinitions.MovementBonusWithRestrictions>
+                                                      .createFeature("AlchemistRunemasterSubclassConnectionPropulsionArmorRuneTriggerFeature",
+                                                                     "",
+                                                                     Common.common_no_title,
+                                                                     Common.common_no_title,
+                                                                     Common.common_no_icon,
+                                                                     a =>
+                                                                     {
+                                                                         a.modifiers.Add(DatabaseHelper.FeatureDefinitionMovementAffinitys.MovementAffinityLongstrider);
+                                                                         a.restrictions.Add(new NewFeatureDefinitions.WearingArmorWithFeature(propulsion_rune.armor_feature));
+                                                                     }
+                                                                     );
+
+            armor_runes = Helpers.FeatureSetBuilder.createFeatureSet("AlchemistRunemasterSubclassArmorRunes",
+                                                                    "",
+                                                                    "Feature/&AlchemistRunemasterSubclassArmorRunesTitle",
+                                                                    "Feature/&AlchemistRunemasterSubclassArmorRunesDescription",
+                                                                    false,
+                                                                    FeatureDefinitionFeatureSet.FeatureSetMode.Union,
+                                                                    false,
+                                                                    protection_rune_power,
+                                                                    trigger_stealth_advantage,
+                                                                    trigger_speed_bonus,
+                                                                    protection_rune.power,
+                                                                    dampening_rune.power,
+                                                                    propulsion_rune.power
+                                                                    );
+
+            dampening_rune.power.linkedPower = protection_rune.power;
+            propulsion_rune.power.linkedPower = protection_rune.power;
         }
 
 
         static void createWeaponRunes()
         {
-            var connection_rune = createWeaponRunePower("AlchemistRunemasterSubclassConnectionRune", DatabaseHelper.FeatureDefinitionPowers.PowerFighterActionSurge.guiPresentation.spriteReference);
+            var connection_rune = createWeaponRunePower("AlchemistRunemasterSubclassConnectionWeaponRune", DatabaseHelper.FeatureDefinitionPowers.PowerFighterActionSurge.guiPresentation.spriteReference);
             var use_int_stat_feature = Helpers.FeatureBuilder<NewFeatureDefinitions.ReplaceWeaponAbilityScoreWithHighestStatIfWeaponHasFeature>
-                                                  .createFeature("AlchemistRunemasterSubclassConnectionRuneUseIntStatFeature",
+                                                  .createFeature("AlchemistRunemasterSubclassConnectionWeaponRuneUseIntStatFeature",
                                                                  "",
                                                                  Common.common_no_title,
                                                                  Common.common_no_title,
@@ -1583,7 +1698,7 @@ namespace SolastaAlchemistClass
                                                                  );
 
             var use_weapon_as_spellfocus = Helpers.FeatureBuilder<NewFeatureDefinitions.AllowToUseWeaponWithFeatureAsSpellFocus>
-                                                      .createFeature("AlchemistRunemasterSubclassConnectionRuneSpellFocusFeature",
+                                                      .createFeature("AlchemistRunemasterSubclassConnectionWeaponRuneSpellFocusFeature",
                                                                      "",
                                                                      Common.common_no_title,
                                                                      Common.common_no_title,
@@ -1594,9 +1709,9 @@ namespace SolastaAlchemistClass
                                                                      }
                                                                      );
 
-            var destruction_rune = createWeaponRunePower("AlchemistRunemasterSubclassDestructionRune", DatabaseHelper.FeatureDefinitionPowers.PowerDomainBattleDecisiveStrike.guiPresentation.spriteReference);
+            var destruction_rune = createWeaponRunePower("AlchemistRunemasterSubclassDestructionWEaponRune", DatabaseHelper.FeatureDefinitionPowers.PowerDomainBattleDecisiveStrike.guiPresentation.spriteReference);
 
-            var destruction_rune_affinity = Helpers.CopyFeatureBuilder<FeatureDefinitionAdditionalDamage>.createFeatureCopy("AlchemistRunemasterSubclassDestructionRuneDestructionAffinity",
+            var destruction_rune_affinity = Helpers.CopyFeatureBuilder<FeatureDefinitionAdditionalDamage>.createFeatureCopy("AlchemistRunemasterSubclassDestructionWeaponRuneDestructionAffinity",
                                                                                                        "",
                                                                                                        Common.common_no_title,
                                                                                                        Common.common_no_title,
@@ -1604,26 +1719,27 @@ namespace SolastaAlchemistClass
                                                                                                        DatabaseHelper.FeatureDefinitionAdditionalDamages.AdditionalDamageDomainLifeDivineStrike,
                                                                                                        a =>
                                                                                                        {
-                                                                                                           a.notificationTag = "AlchemistRunemasterSubclassDestructionRuneDestructionAffinity";
+                                                                                                           a.notificationTag = "AlchemistRunemasterSubclassDestructionWeaponRuneDestructionAffinity";
                                                                                                            a.damageValueDetermination = RuleDefinitions.AdditionalDamageValueDetermination.Die;
                                                                                                            a.damageDieType = RuleDefinitions.DieType.D8;
                                                                                                        }
                                                                                                        );
 
-            var destruction_rune_condition = Helpers.ConditionBuilder.createConditionWithInterruptions("AlchemistRunemasterSubclassDestructionRuneCondition",
+            var destruction_rune_condition = Helpers.ConditionBuilder.createConditionWithInterruptions("AlchemistRunemasterSubclassDestructionWeaponRuneCondition",
                                                                                                        "",
                                                                                                        Common.common_no_title,
                                                                                                        Common.common_no_title,
                                                                                                        Common.common_no_icon,
                                                                                                        DatabaseHelper.ConditionDefinitions.ConditionDummy,
-                                                                                                       new RuleDefinitions.ConditionInterruption[] { RuleDefinitions.ConditionInterruption.Attacks }
+                                                                                                       new RuleDefinitions.ConditionInterruption[] {RuleDefinitions.ConditionInterruption.Attacks },
+                                                                                                       destruction_rune_affinity
                                                                                                        );
             destruction_rune_condition.silentWhenAdded = true;
             destruction_rune_condition.silentWhenRemoved = true;
             NewFeatureDefinitions.ConditionsData.no_refresh_conditions.Add(destruction_rune_condition);
 
             var trigger_destruction_rune_feature = Helpers.FeatureBuilder<NewFeatureDefinitions.InitiatorApplyConditionOnAttackToAttackerIfWeaponHasFeature>
-                                          .createFeature("AlchemistRunemasterSubclassDestructionRuneTriggerFeature",
+                                          .createFeature("AlchemistRunemasterSubclassDestructionWeaponRuneTriggerFeature",
                                                          "",
                                                          Common.common_no_title,
                                                          Common.common_no_title,
@@ -1641,21 +1757,22 @@ namespace SolastaAlchemistClass
             var guardian_rune = createWeaponRunePower("AlchemistRunemasterSubclassGuardianRune", DatabaseHelper.FeatureDefinitionPowers.PowerOathOfDevotionSacredWeapon.guiPresentation.spriteReference);
 
             var disadvantage_feature = Helpers.FeatureBuilder<NewFeatureDefinitions.AttackDisadvantageAgainstNonCaster>
-                                                  .createFeature("AlchemistRunemasterSubclassGuardianRuneDisadvantageFeature",
+                                                  .createFeature("AlchemistRunemasterSubclassGuardianWeaponRuneDisadvantageFeature",
                                                                  "",
                                                                  Common.common_no_title,
                                                                  Common.common_no_title,
                                                                  Common.common_no_icon
                                                                  );
 
-            var guardian_rune_condition = Helpers.ConditionBuilder.createCondition("AlchemistRunemasterSubclassGuardianRuneCondition",
+            var guardian_rune_condition = Helpers.ConditionBuilder.createCondition("AlchemistRunemasterSubclassGuardianWeaponRuneCondition",
                                                                                            "",
+                                                                                           "Rules/&AlchemistRunemasterSubclassGuardianRuneConditionTitle",
                                                                                            Common.common_no_title,
-                                                                                           Common.common_no_title,
-                                                                                           Common.common_no_icon,
+                                                                                           null,
                                                                                            DatabaseHelper.ConditionDefinitions.ConditionCursedByBestowCurseAttackRoll,
                                                                                            disadvantage_feature
                                                                                            );
+            disadvantage_feature.condition = guardian_rune_condition;
             var trigger_guardian_rune_feature = Helpers.FeatureBuilder<NewFeatureDefinitions.InitiatorApplyConditionOnAttackHitToTargetIfWeaponHasFeature>
                               .createFeature("AlchemistRunemasterSubclassGuardianRuneTriggerFeature",
                                              "",
@@ -1668,7 +1785,7 @@ namespace SolastaAlchemistClass
                                                  a.durationType = RuleDefinitions.DurationType.Round;
                                                  a.turnOccurence = RuleDefinitions.TurnOccurenceType.EndOfTurn;
                                                  a.durationValue = 1;
-                                                 a.weaponFeature = destruction_rune.weapon_feature;
+                                                 a.weaponFeature = guardian_rune.weapon_feature;
                                              }
                                              );
             destruction_rune.power.linkedPower = connection_rune.power;
@@ -1696,7 +1813,7 @@ namespace SolastaAlchemistClass
         {
             var title_string = "Feature/&" + prefix + "Title";
             var description_string = "Feature/&" + prefix + "Description";
-            var weapon_feature = Helpers.OnlyDescriptionFeatureBuilder.createOnlyDescriptionFeature(prefix + "WeaponFeature",
+            var weapon_feature = Helpers.OnlyDescriptionFeatureBuilder.createOnlyDescriptionFeature(prefix + "Feature",
                                                                                  "",
                                                                                  title_string,
                                                                                  description_string,
@@ -1736,6 +1853,54 @@ namespace SolastaAlchemistClass
 
             rune_powers.Add(power);
             return (power, weapon_feature);
+        }
+
+
+        static (NewFeatureDefinitions.PowerWithRestrictions power, FeatureDefinition armor_feature) createArmorRunePower(string prefix, AssetReferenceSprite sprite)
+        {
+            var title_string = "Feature/&" + prefix + "Title";
+            var description_string = "Feature/&" + prefix + "Description";
+            var armor_feature = Helpers.OnlyDescriptionFeatureBuilder.createOnlyDescriptionFeature(prefix + "Feature",
+                                                                                 "",
+                                                                                 title_string,
+                                                                                 description_string,
+                                                                                 sprite);
+            var effect = new EffectDescription();
+            effect.Copy(DatabaseHelper.SpellDefinitions.MageArmor.EffectDescription);
+            effect.EffectForms.Clear();
+            effect.EffectAdvancement.Clear();
+            effect.rangeParameter = 1;
+            effect.durationParameter = 1;
+            effect.itemSelectionType = ActionDefinitions.ItemSelectionType.Equiped;
+            effect.targetType = RuleDefinitions.TargetType.Self;
+            effect.rangeType = RuleDefinitions.RangeType.Self;
+            effect.targetFilteringTag = RuleDefinitions.TargetFilteringTag.No;
+
+            effect.durationType = RuleDefinitions.DurationType.UntilAnyRest;
+
+            var effect_form = new EffectForm();
+            effect_form.itemPropertyForm = new ItemPropertyForm();
+            effect_form.FormType = EffectForm.EffectFormType.ItemProperty;
+            effect_form.itemPropertyForm.featureBySlotLevel = new List<FeatureUnlockByLevel> { new FeatureUnlockByLevel(armor_feature, 0) };
+            effect.EffectForms.Add(effect_form);
+            effect.effectAdvancement.Clear();
+
+            var power = Helpers.GenericPowerBuilder<NewFeatureDefinitions.PowerWithRestrictions>
+                                                                        .createPower(prefix + "Power",
+                                                                                     "",
+                                                                                     title_string,
+                                                                                     description_string,
+                                                                                     sprite,
+                                                                                     effect,
+                                                                                     RuleDefinitions.ActivationTime.Action,
+                                                                                     1,
+                                                                                     RuleDefinitions.UsesDetermination.Fixed,
+                                                                                     RuleDefinitions.RechargeRate.ShortRest
+                                                                                    );
+            power.restrictions = new List<NewFeatureDefinitions.IRestriction> { new NewFeatureDefinitions.WearingArmorWithoutFeature(armor_feature) };
+
+            rune_powers.Add(power);
+            return (power, armor_feature);
         }
 
 

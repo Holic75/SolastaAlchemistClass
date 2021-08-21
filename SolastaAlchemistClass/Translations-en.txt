@@ -112,4 +112,27 @@ Feedback/&AdditionalDamageAlchemistGrenadierSubclassDestructionAffinityFormat	De
 Subclass/&AlchemistSubclassSpecializationRunemasterTitle	Runemaster
 Subclass/&AlchemistSubclassSpecializationRunemasterDescription	While most alchemists practice in mainstream alchemy - extracts, mutagens, or bombs - some diverge into the obscure path of magic that combines both alchemical knowledge with arcane runes. Runemasters have adapted their alchemical magical techniques to inscribe mystical runes on their weapons or armors, in order to strengthen their skills on the battlefield.
 Feature/&AlchemistRunemasterSubclassBonusProficienciesTitle Tools of the Trade
-Feature/&AlchemistRunemasterSubclassBonusProficienciesDEscription	At 3rd level, you gain proficiency with martial weapons and armor, and Smith's Tools.
+Feature/&AlchemistRunemasterSubclassBonusProficienciesDescription	At 3rd level, you gain proficiency with martial weapons and armor, and Smith's Tools.
+Feature/&AlchemistRunemasterSubclassConnectionWeaponRuneTitle	Weapon Rune: Connection
+Feature/&AlchemistRunemasterSubclassConnectionWeaponRuneDescription	Inscribing this rune on your weapon allows you add your Intelligence modifier, instead of Strength or Dexterity, to the attack and damage rolls. You can also use this weapon as spellcasting focus.
+Feature/&AlchemistRunemasterSubclassDestructionWEaponRuneTitle	Weapon Rune: Destruction
+Feature/&AlchemistRunemasterSubclassDestructionWEaponRuneDescription	Once on each of your turns when you hit a creature with a weapon empowered wih this rune, you can deal an extra 1d8 radiant damage to that target.
+Feedback/&AdditionalDamageAlchemistRunemasterSubclassDestructionWeaponRuneDestructionAffinityLine	Extra 1d8 radiant damage due to Destruction Rune
+Feedback/&AdditionalDamageAlchemistRunemasterSubclassDestructionWeaponRuneDestructionAffinityFormat	Destruction Rune
+Feature/&AlchemistRunemasterSubclassGuardianRuneTitle	Weapon Rune: Ward
+Feature/&AlchemistRunemasterSubclassGuardianRuneDescription	A creature you hit with the weapon empowered with this rune, has disadvantage on attack rolls against targets other than you until the start of your next turn, as the rune emits a distracting pulse when the creature attacks someone else.
+Rules/&AlchemistRunemasterSubclassGuardianRuneConditionTitle	Affected by Weapon Rune: Ward
+Feature/&AlchemistRunemasterSubclassWeaponRunesTitle	Weapon Runes
+Feature/&AlchemistRunemasterSubclassWeaponRunesDescription	You can apply one of empowering runes to your weapon. You can change the rune you applied upon finishing a short rest.
+Feature/&AlchemistRunemasterSubclassProtectionArmorRuneTitle	Armor Rune: Protection
+Feature/&AlchemistRunemasterSubclassProtectionArmorRuneDescription	While wearing a suit of armor empowered by this rune, as a bonus action, you can gain temporary hit points equal to your level in this class, replacing any temporary hit points you already have. You can use this bonus action a number of times equal to your proficiency bonus, and you regain all expended uses when you finish a long rest.
+Feature/&AlchemistRunemasterSubclassProtectionArmorRuneUsePowerTitle Activate Protection Rune
+Feature/&AlchemistRunemasterSubclassProtectionArmorRuneUsePowerDescription	Activate rune to receive temporary hit points.
+Feature/&AlchemistRunemasterSubclassDampeningArmorRuneTitle	Armor Rune:	Dampening
+Feature/&AlchemistRunemasterSubclassDampeningArmorRuneDescription	While wearing a suit of armor empowered by this rune, you have advantage on Dexterity (Stealth) checks. If the armor normally imposes disadvantage on such checks, the advantage and disadvantage cancel each other, as normal.
+Feature/&AlchemistRunemasterSubclassPropulsionArmorRuneTitle	Armor Rune: Propulsion
+Feature/&AlchemistRunemasterSubclassPropulsionArmorRuneDescription	While wearing armor empowered by this rune, you gain a 10 feet walking speed increase.
+Feature/&AlchemistRunemasterSubclassArmorRunesTitle	Armor Runes
+Feature/&AlchemistRunemasterSubclassArmorRunesDescription	You can apply one of empowering runes to your armor. You can change the rune you applied upon finishing a short rest.
+Feature/&AlchemistRunemasterSubclassRuneSpecialistTitle	Rune Specialization
+Feature/&AlchemistRunemasterSubclassRuneSpecialistDescription	You can apply up to two runes to your armor and weapon.

@@ -1,7 +1,7 @@
 # Alchemist class for Solasta
 
 This is a mod for the game Solasta: Crown of the Magister.
-It adds alchemist class with 2 specializaiton subclasses: Vivisectionist and Grenadier.
+It adds alchemist class with 3 specializaiton subclasses: Grenadier, Runemaster and Vivisectionist.
 This mod requires SolastaModApi https://github.com/SolastaMods/SolastaModApi
 and SolastaModHelpers https://github.com/Holic75/SolastaModHelpers
 
