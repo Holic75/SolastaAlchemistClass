@@ -66,7 +66,7 @@ Feature/&AlchemistClassFlashOfGeniusDescription	At 7th level, you've gained the 
 Reaction/&ConsumePowerUseAlchemistClassFlashOfGeniusDescription	{2} is about to fail a saving throw against {0}. You can spend one use of your Flash of Genius ability to add your INT modifier to the resulting roll.
 Reaction/&ConsumePowerUseAlchemistClassFlashOfGeniusReactDescription Use Flash of Genius
 Subclass/&AlchemistSubclassSpecializationVivisectionistTitle Vivisectionist
-Subclass/&AlchemistSubclassSpecializationVivisectionistDescription	Vivisectionist is and alchemist devoted to study of anatomy and other bodily functions in order to discover the secrets of life and death. Although the methods they use might not be appreciated by majority of people, no one denies their expertise in healing the gravest wounds, and striking where it hurts most. 
+Subclass/&AlchemistSubclassSpecializationVivisectionistDescription	Vivisectionist is an alchemist devoted to study of anatomy and other bodily functions in order to discover the secrets of life and death. Although the methods they use might not be appreciated by majority of people, no one denies their expertise in healing the gravest wounds, and striking where it hurts most. 
 Feature/&AlchemistSubclassBonusSpells Bonus Spells
 Screen/&SpecializationSpellDescription	This specialization spell is always considered prepared.\nIt does not count towards your spell preparation limit. 
 Screen/&SpecializationSpellTitle	Specialization
