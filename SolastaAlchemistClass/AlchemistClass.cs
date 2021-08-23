@@ -1772,6 +1772,7 @@ namespace SolastaAlchemistClass
                                                                                            DatabaseHelper.ConditionDefinitions.ConditionCursedByBestowCurseAttackRoll,
                                                                                            disadvantage_feature
                                                                                            );
+            guardian_rune_condition.conditionTags.Clear();
             disadvantage_feature.condition = guardian_rune_condition;
             var trigger_guardian_rune_feature = Helpers.FeatureBuilder<NewFeatureDefinitions.InitiatorApplyConditionOnAttackHitToTargetIfWeaponHasFeature>
                               .createFeature("AlchemistRunemasterSubclassGuardianRuneTriggerFeature",
