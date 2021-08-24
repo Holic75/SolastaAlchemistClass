@@ -442,7 +442,7 @@ namespace SolastaAlchemistClass
             base_mutagen = Helpers.GenericPowerBuilder<NewFeatureDefinitions.HiddenPower>
                                                 .createPower("AlchemistClassBaseMutagenPower",
                                                                 "",
-                                                                Common.common_no_title,
+                                                                "Feature/&AlchemistClassMutagenFeatureSetTitle",
                                                                 Common.common_no_title,
                                                                 Common.common_no_icon,
                                                                 DatabaseHelper.FeatureDefinitionPowers.PowerDomainElementalFireBurst.effectDescription,
@@ -455,6 +455,7 @@ namespace SolastaAlchemistClass
                                                                 1,
                                                                 true
                                                                 );
+            base_mutagen.guiPresentation.hidden = true;
 
             mutagen_powers.Add(base_mutagen);
             var strength_feature = Helpers.CopyFeatureBuilder<FeatureDefinitionAttributeModifier>.createFeatureCopy("AlchemistClassMutagenStrenghtBonus",
