@@ -1002,7 +1002,7 @@ namespace SolastaAlchemistClass
                                                                               null,
                                                                               DatabaseHelper.ConditionDefinitions.ConditionDummy
                                                                               );
-
+            condition_summoned.terminateWhenRemoved = true;
             control_power.restrictions.Add(new NewFeatureDefinitions.HasConditionRestriction(condition_summoned));
 
             List<EffectDescription> effect_descriptions = new List<EffectDescription>();
