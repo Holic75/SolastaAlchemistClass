@@ -701,7 +701,7 @@ namespace SolastaAlchemistClass
             var condition = Helpers.ConditionBuilder.createCondition(name + "Condition",
                                                                      "",
                                                                      title_string,
-                                                                     Common.common_no_title,
+                                                                     description_string,
                                                                      sprite_condition,
                                                                      DatabaseHelper.ConditionDefinitions.ConditionBearsEndurance,
                                                                      features);
