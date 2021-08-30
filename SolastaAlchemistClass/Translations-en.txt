@@ -14,7 +14,7 @@ Feature/&AlchemistClassSpellcastingTitle	Alchemist Spellcasting
 Feature/&AlchemistClassSpellcastingDescription	Can cast spells from Alchemist Spells list
 Feature/&AlchemistClassRitualCastingDescription	You can cast a prepared spell as a ritual if the spell has the ritual tag.
 Feature/&AlchemistClassMutagenFeatureSetTitle	Mutagencraft
-Feature/&AlchemistClassMutagenFeatureSetDescription	At 2nd level, you can prepare up to 2 mutagens when you finish a long rest. You can prepare one more mutagen at 6th level, and every 4 levels thereafter. You can administer these mutagens to yourself or other characters. Upon being imbibed, the mutagen provides a +2 bonus to either Strength, Dexterity or Constitution until next long rest. As alchemist gain levels he learns to prepare more complex mutagens, prooviding different effects. The mutagens are unstable by nature, losing their potency over time and becoming inert if not used before you finish your next long rest.
+Feature/&AlchemistClassMutagenFeatureSetDescription	You can prepare up to 2 mutagens when you finish a long rest. You can prepare one more mutagen at 6th level, and every 4 levels thereafter. You can administer these mutagens to yourself or other characters. Upon being imbibed, the mutagen provides a +2 bonus to either Strength, Dexterity or Constitution until next long rest. As alchemist gain levels he learns to prepare more complex mutagens, prooviding different effects. The mutagens are unstable by nature, losing their potency over time and becoming inert if not used before you finish your next long rest.
 Feature/&AlchemistClassMutagenSelectionFeatureSetTitle	Extra Mutagen
 Feature/&AlchemistClassMutagenSelectionFeatureSetDescription You learn to create a new type of mutagen.
 Feature/&AlchemistClassMutagenStrengthTitle	Strength Mutagen
@@ -58,11 +58,11 @@ Feature/&AlchemistClassMutagenSpiderClimbDescription	The target gains ability to
 Feature/&AlchemistClassMutagenCriticalHitImmunityTitle	Critical Hit Immunity Mutagen
 Feature/&AlchemistClassMutagenCriticalHitImmunityDescription	The target gains immunity to critical hits.
 Feature/&AlchemistClassCraftingExpertiseTitle Crafting Expertise
-Feature/&AlchemistClassCraftingExpertiseDescription	At 6th level, your proficiency bonus is now doubled for any ability check you make that uses your proficiency with a crafting tool.
+Feature/&AlchemistClassCraftingExpertiseDescription	Your proficiency bonus is now doubled for any ability check you make that uses your proficiency with a crafting tool.
 Feature/&AlchemistClassCraftingAdeptTitle	Crafting Adept
-Feature/&AlchemistClassCraftingAdeptDescription	When you reach 10th level, you achieve a profound understanding of how to craft items using your tools. You need half the normal time to craft items.
+Feature/&AlchemistClassCraftingAdeptDescription	You achieve a profound understanding of how to craft items using your tools. You need half the normal time to craft items.
 Feature/&AlchemistClassFlashOfGeniusTitle Flash of Genius
-Feature/&AlchemistClassFlashOfGeniusDescription	At 7th level, you've gained the ability to come up with solutions under pressure. When you or another creature you can see within 30 feet of you makes an ability check or a saving throw, you can use your reaction to add your Intelligence modifier to the roll./nYou can use this feature a number of times equal to your Intelligence modifier (minimum of once). You regain all expended uses when you finish a long rest.
+Feature/&AlchemistClassFlashOfGeniusDescription	You've gained the ability to come up with solutions under pressure. When you or another creature you can see within 30 feet of you makes an ability check or a saving throw, you can use your reaction to add your Intelligence modifier to the roll./nYou can use this feature a number of times equal to your Intelligence modifier (minimum of once). You regain all expended uses when you finish a long rest.
 Reaction/&ConsumePowerUseAlchemistClassFlashOfGeniusDescription	{2} is about to fail a saving throw against {0}. You can spend one use of your Flash of Genius ability to add your INT modifier to the resulting roll.
 Reaction/&ConsumePowerUseAlchemistClassFlashOfGeniusReactDescription Use Flash of Genius
 Subclass/&AlchemistSubclassSpecializationVivisectionistTitle Vivisectionist
@@ -80,20 +80,20 @@ Monster/&HomunculusTitle	Flesh Servant
 Feature/&AlchemistVivisectionistSubclassHomunculusDestroySelfPowerTitle	Destroy Self
 Feature/&AlchemistVivisectionistSubclassHomunculusDestroySelfPowerDescription	Flesh servant falls apart.
 Feature/&AlchemistVivisectionistSubclassSummonHomunculusPowerTitle	Flesh Servant
-Feature/&AlchemistVivisectionistSubclassSummonHomunculusPowerDescription	By 5th level, your understaning of living creatures biology allows you to create a semblance of life. By expending a spell slot you can create a creature consisting of flesh of your fallen enemies (or allies).\nIn combat, Flesh Servant can move and use its reaction on its own, but the only action it takes on its turn is the Dodge action, unless you take a bonus action on your turn to command it to take another action. That action can be one in its stat block or some other action. If you are incapacitated, the defender can take any action of its choice, not just Dodge.
+Feature/&AlchemistVivisectionistSubclassSummonHomunculusPowerDescription	Your understaning of living creatures biology allows you to create a semblance of life. By expending a spell slot you can create a creature consisting of flesh of your fallen enemies (or allies).\nIn combat, Flesh Servant can move and use its reaction on its own, but the only action it takes on its turn is the Dodge action, unless you take a bonus action on your turn to command it to take another action. That action can be one in its stat block or some other action. If you are incapacitated, the defender can take any action of its choice, not just Dodge.
 Feature/&AlchemistVivisectionistSubclassSummonHomunculusControlPowerTitle	Control Flesh Servant
 Feature/&AlchemistVivisectionistSubclassSummonHomunculusControlPowerDescription	Take control of Flesh Servant.
 Rules/&AlchemistVivisectionistSubclassHomunculusUncontrolledConditionTitle Uncontrolled
 Rules/&AlchemistVivisectionistSubclassHomunculusUncontrolledConditionDescription	Flesh Servant did not receive any orders from its master. It can only move, use its reaction and take dodge action.
 Feature/&AlchemistVivisectionistSubclassDeathStrikeDamageTitle	Death Attack
-Feature/&AlchemistVivisectionistSubclassDeathStrikeDamageDescription	At 9th level, you learn new ways to inflict grave wounds. When you hit a target with a weapon attack you can channel the necrotic energy through your weapons and inflict an extra 2d6 points of damage.\nYou can use this ability a number of times equal to your Intelligence modifier, but you can do so no more than once on a turn. You regain all expended uses when you finish a long rest.
+Feature/&AlchemistVivisectionistSubclassDeathStrikeDamageDescription	You learn new ways to inflict grave wounds. When you hit a target with a weapon attack you can channel the necrotic energy through your weapons and inflict an extra 2d6 points of damage.\nYou can use this ability a number of times equal to your Intelligence modifier, but you can do so no more than once on a turn. You regain all expended uses when you finish a long rest.
 Reaction/&SpendAlchemistVivisectionistSubclassDeathStrikeDamagePowerReactDescription	Deal an extra 2d6 points of necrotic damage to the target.
 Subclass/&AlchemistSubclassSpecializationGrenadierTitle	Grenadier
 Subclass/&AlchemistSubclassSpecializationGrenadierDescription	Grenadiers are fanatic demolition experts. They specialize in using magic to hurl energy, projectiles, and explosions on a battlefield.
 Feature/&AlchemistGrenadierSubclassBonusProficienciesTitle	Tools of the Trade
 Feature/&AlchemistGrenadierSubclassBonusProficienciesDescription	When you adopt this specialization at 3rd level, you gain proficiency with Scroll Kit.
 Feature/&AlchemistGrenadierSubclassBombsFeatureSetTitle	Eldritch Grenades
-Feature/&AlchemistGrenadierSubclassBombsFeatureSetDescription	At 3rd level you become adept at swiftly mixing various volatile chemicals and infusing them with your magic to create powerful grenades to hurl at your enemies. You can create a total number of grenades equal to your alchemsit level + your INT modifier after finishing long rest. You can use grenades as a bonus action.
+Feature/&AlchemistGrenadierSubclassBombsFeatureSetDescription	You become adept at swiftly mixing various volatile chemicals and infusing them with your magic to create powerful grenades to hurl at your enemies. You can create a total number of grenades equal to your alchemsit level + your INT modifier after finishing long rest. You can use grenades as a bonus action.
 Feature/&AlchemistGrenadierSubclassPowerfulBombsFeatureSetTitle	Powerful Grenades
 Feature/&AlchemistGrenadierSubclassPowerfulBombsFeatureSetDescription	The damage (or amount of temporary HP) of your grenades increases by 1d8.
 Feature/&AlchemistGrenadierSubclassFlameBlastPowerTitle Flame Blast
@@ -106,13 +106,13 @@ Feature/&AlchemistGrenadierSubclassProtectiveBurstPowerTitle	Healing Grenade
 Feature/&AlchemistGrenadierSubclassProtectiveBurst2PowerDescription	You emit a burst of positive energy that grants you and all your allies within 10 feet of it a number of temporary hit points equal to 1d8 + your Intelligence modifier.
 Feature/&AlchemistGrenadierSubclassProtectiveBurst3PowerDescription	You emit a burst of positive energy that grants you and all your allies within 10 feet of it a number of temporary hit points equal to 2d8 + your Intelligence modifier.
 Feature/&AlchemistGrenadierSubclassDestructionAffinityTitle	Destruction Specialist
-Feature/&AlchemistGrenadierSubclassDestructionAffinityDescription You add 1d8 to all your evocation spells damage.
+Feature/&AlchemistGrenadierSubclassDestructionAffinityDescription	You add 1d8 to all your evocation spells damage.
 Feedback/&AdditionalDamageAlchemistGrenadierSubclassDestructionAffinityLine	Extra 1d8 damage due to Destruction Specialist
 Feedback/&AdditionalDamageAlchemistGrenadierSubclassDestructionAffinityFormat	Destruction Specialist
 Subclass/&AlchemistSubclassSpecializationRunemasterTitle	Runemaster
 Subclass/&AlchemistSubclassSpecializationRunemasterDescription	While most alchemists practice in mainstream alchemy - extracts, mutagens, or bombs - some diverge into the obscure path of magic that combines both alchemical knowledge with arcane runes. Runemasters have adapted their alchemical magical techniques to inscribe mystical runes on their weapons or armors, in order to strengthen their skills on the battlefield.
 Feature/&AlchemistRunemasterSubclassBonusProficienciesTitle Tools of the Trade
-Feature/&AlchemistRunemasterSubclassBonusProficienciesDescription	At 3rd level, you gain proficiency with martial weapons and armor, and Smith's Tools.
+Feature/&AlchemistRunemasterSubclassBonusProficienciesDescription	You gain proficiency with martial weapons and armor, and Smith's Tools.
 Feature/&AlchemistRunemasterSubclassConnectionWeaponRuneTitle	Weapon Rune: Connection
 Feature/&AlchemistRunemasterSubclassConnectionWeaponRuneDescription	Inscribing this rune on your weapon allows you add your Intelligence modifier, instead of Strength or Dexterity, to the attack and damage rolls. You can also use this weapon as spellcasting focus.
 Feature/&AlchemistRunemasterSubclassDestructionWEaponRuneTitle	Weapon Rune: Destruction
