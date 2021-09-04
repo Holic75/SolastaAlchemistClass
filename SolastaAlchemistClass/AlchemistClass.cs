@@ -705,6 +705,9 @@ namespace SolastaAlchemistClass
                                                                      sprite_condition,
                                                                      DatabaseHelper.ConditionDefinitions.ConditionBearsEndurance,
                                                                      features);
+            condition.specialDuration = true;
+            condition.durationParameter = 1;
+            condition.durationType = RuleDefinitions.DurationType.UntilLongRest;
 
             var effect = new EffectDescription();
             effect.Copy(DatabaseHelper.SpellDefinitions.EnhanceAbilityBullsStrength.EffectDescription);
