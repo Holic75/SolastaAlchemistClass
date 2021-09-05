@@ -970,6 +970,7 @@ namespace SolastaAlchemistClass
                                                                                    a =>
                                                                                    {
                                                                                        a.abilityScore = Helpers.Stats.Intelligence;
+                                                                                       a.doNotApplyToDamage = true;
                                                                                    }
                                                                                    );
 
