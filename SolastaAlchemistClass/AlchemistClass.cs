@@ -488,7 +488,7 @@ namespace SolastaAlchemistClass
                                                                                                                         DatabaseHelper.FeatureDefinitionAttributeModifiers.AttributeModifierDwarfAbilityScoreIncrease,
                                                                                                                         a =>
                                                                                                                         {
-                                                                                                                            a.modifiedAttribute = Helpers.Stats.Intelligence;
+                                                                                                                            a.modifiedAttribute = Helpers.Stats.Wisdom;
                                                                                                                         }
                                                                                                                         );
 
@@ -526,7 +526,7 @@ namespace SolastaAlchemistClass
                                                   DatabaseHelper.SpellDefinitions.EnhanceAbilityEaglesSplendor.EffectDescription.EffectParticleParameters,
                                                   DatabaseHelper.ConditionDefinitions.ConditionEaglesSplendor.guiPresentation.spriteReference,
                                                   DatabaseHelper.SpellDefinitions.EnhanceAbilityEaglesSplendor.GuiPresentation.spriteReference,
-                                                  wisdom_feature
+                                                  DatabaseHelper.FeatureDefinitionAttributeModifiers.AttributeModifierHalfElfAbilityScoreIncreaseCha
                                                   );
 
             var fire_resistance_mutagen = createMutagenPower("AlchemistClassMutagenFireResistance",
