@@ -50,14 +50,14 @@ Feature/&AlchemistClassMutagenDarkvisionDescription	The target gains darkvision 
 Feature/&AlchemistClassMutagenInitiativeTitle	Initiative Mutagen
 Feature/&AlchemistClassMutagenInitiativeDescription	The target gains advantage on all initiative rolls.
 Feature/&AlchemistClassMutagenSpeedTitle	Celerity Mutagen
-Feature/&AlchemistClassMutagenSpeedDescription	The target's speed increases by 10 feet.
+Feature/&AlchemistClassMutagenSpeedDescription	The target's speed increases by 10 feet and it can jump further than normal.
 Feature/&AlchemistClassMutagenPoisonImmunityTitle	Poison Immunity Mutagen
 Feature/&AlchemistClassMutagenPoisonImmunityDescription	The target gains immunity to poison.
 Feature/&AlchemistClassMutagenSpiderClimbTitle	Spider Climbing Mutagen
 Feature/&AlchemistClassMutagenSpiderClimbDescription	The target gains ability to climb walls like a spider.
 Feature/&AlchemistClassMutagenCriticalHitImmunityTitle	Critical Hit Immunity Mutagen
 Feature/&AlchemistClassMutagenCriticalHitImmunityDescription	The target gains immunity to critical hits.
-Feature/&AlchemistClassCraftingExpertiseTitle Crafting Expertise
+Feature/&AlchemistClassCraftingExpertiseTitle	Crafting Expertise
 Feature/&AlchemistClassCraftingExpertiseDescription	Your proficiency bonus is now doubled for any ability check you make that uses your proficiency with a crafting tool.
 Feature/&AlchemistClassCraftingAdeptTitle	Crafting Adept
 Feature/&AlchemistClassCraftingAdeptDescription	You achieve a profound understanding of how to craft items using your tools. You need half the normal time to craft items.
@@ -133,6 +133,6 @@ Feature/&AlchemistRunemasterSubclassDampeningArmorRuneDescription	While wearing 
 Feature/&AlchemistRunemasterSubclassPropulsionArmorRuneTitle	Armor Rune: Propulsion
 Feature/&AlchemistRunemasterSubclassPropulsionArmorRuneDescription	While wearing armor empowered by this rune, you gain a 10 feet walking speed increase.
 Feature/&AlchemistRunemasterSubclassArmorRunesTitle	Armor Runes
-Feature/&AlchemistRunemasterSubclassArmorRunesDescription	You can apply one of empowering runes to your armor. You can change the rune you applied upon finishing a short rest.
+Feature/&AlchemistRunemasterSubclassArmorRunesDescription	You can apply one empowering rune to your armor. You can change the rune you applied upon finishing a short rest.
 Feature/&AlchemistRunemasterSubclassRuneSpecialistTitle	Rune Specialization
 Feature/&AlchemistRunemasterSubclassRuneSpecialistDescription	You can apply up to two runes to your armor and weapon.

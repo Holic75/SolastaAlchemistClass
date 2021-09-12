@@ -600,7 +600,8 @@ namespace SolastaAlchemistClass
                                                     DatabaseHelper.SpellDefinitions.Longstrider.EffectDescription.EffectParticleParameters,
                                                     DatabaseHelper.ConditionDefinitions.ConditionLongstrider.guiPresentation.spriteReference,
                                                     DatabaseHelper.SpellDefinitions.ExpeditiousRetreat.GuiPresentation.spriteReference,
-                                                    DatabaseHelper.FeatureDefinitionMovementAffinitys.MovementAffinityLongstrider
+                                                    DatabaseHelper.FeatureDefinitionMovementAffinitys.MovementAffinityLongstrider,
+                                                    DatabaseHelper.FeatureDefinitionMovementAffinitys.MovementAffinityJump
                                                     );
 
 
@@ -1167,6 +1168,7 @@ namespace SolastaAlchemistClass
                                                                                                  a.characterFamily = "Monstrosity";
                                                                                                  a.challengeRating = (level / 2);
                                                                                                  a.droppedLootDefinition = null;
+                                                                                                 a.inDungeonEditor = false;
                                                                                              }
                                                                                              );
             homunculus.bestiaryEntry = BestiaryDefinitions.BestiaryEntry.None;
