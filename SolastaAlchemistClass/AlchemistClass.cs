@@ -219,6 +219,7 @@ namespace SolastaAlchemistClass
                                                                                     DatabaseHelper.SpellDefinitions.Blur,
                                                                                     DatabaseHelper.SpellDefinitions.Darkvision,
                                                                                     DatabaseHelper.SpellDefinitions.EnhanceAbility,
+                                                                                    DatabaseHelper.SpellDefinitions.HeatMetal,
                                                                                     DatabaseHelper.SpellDefinitions.Invisibility,
                                                                                     DatabaseHelper.SpellDefinitions.Levitate,
                                                                                     DatabaseHelper.SpellDefinitions.LesserRestoration,
@@ -250,7 +251,7 @@ namespace SolastaAlchemistClass
             var new_spells = new SpellDefinition[]{ NewFeatureDefinitions.SpellData.getSpell("IceStrikeSpell"),
                                                     NewFeatureDefinitions.SpellData.getSpell("SunlightBladeSpell"),
                                                     NewFeatureDefinitions.SpellData.getSpell("ThunderStrikeSpell"),
-                                                    NewFeatureDefinitions.SpellData.getSpell("HeatMetalSpell")
+                                                    //NewFeatureDefinitions.SpellData.getSpell("HeatMetalSpell")
                                                   };
             foreach (var s in new_spells)
             {
@@ -771,7 +772,7 @@ namespace SolastaAlchemistClass
             effect.SetSavingThrowDifficultyAbility(Helpers.Stats.Intelligence);
             effect.SavingThrowAbility = Helpers.Stats.Intelligence;
             effect.hasSavingThrow = false;
-            effect.effectParticleParameters.impactParticleReference = DatabaseHelper.FeatureDefinitionPowers.PowerVampiricTouchIntelligence.effectDescription.effectParticleParameters.impactParticleReference;
+            effect.effectParticleParameters.impactParticleReference = DatabaseHelper.FeatureDefinitionPowers.PowerVampiricTouch.effectDescription.effectParticleParameters.impactParticleReference;
             effect.SetDifficultyClassComputation(RuleDefinitions.EffectDifficultyClassComputation.AbilityScoreAndProficiency);
             effect.EffectForms.Clear();
 
@@ -1168,7 +1169,7 @@ namespace SolastaAlchemistClass
                                                                                                  a.characterFamily = "Monstrosity";
                                                                                                  a.challengeRating = (level / 2);
                                                                                                  a.droppedLootDefinition = null;
-                                                                                                 a.inDungeonEditor = false;
+                                                                                                 //a.inDungeonEditor = false;
                                                                                              }
                                                                                              );
             homunculus.bestiaryEntry = BestiaryDefinitions.BestiaryEntry.None;
@@ -1193,7 +1194,7 @@ namespace SolastaAlchemistClass
                                                                                                                     {
                                                                                                                         Helpers.Misc.createAutopreparedSpellsGroup(3, DatabaseHelper.SpellDefinitions.HealingWord, DatabaseHelper.SpellDefinitions.HuntersMark),
                                                                                                                         Helpers.Misc.createAutopreparedSpellsGroup(5, DatabaseHelper.SpellDefinitions.RayOfEnfeeblement, DatabaseHelper.SpellDefinitions.Blindness),
-                                                                                                                        Helpers.Misc.createAutopreparedSpellsGroup(9, DatabaseHelper.SpellDefinitions.MassHealingWord, DatabaseHelper.SpellDefinitions.VampiricTouchIntelligence),
+                                                                                                                        Helpers.Misc.createAutopreparedSpellsGroup(9, DatabaseHelper.SpellDefinitions.MassHealingWord, DatabaseHelper.SpellDefinitions.VampiricTouch),
                                                                                                                         Helpers.Misc.createAutopreparedSpellsGroup(13, DatabaseHelper.SpellDefinitions.Blight, DatabaseHelper.SpellDefinitions.DeathWard),
                                                                                                                         Helpers.Misc.createAutopreparedSpellsGroup(17, DatabaseHelper.SpellDefinitions.Contagion, DatabaseHelper.SpellDefinitions.MassCureWounds),
                                                                                                                     };
@@ -1420,7 +1421,7 @@ namespace SolastaAlchemistClass
                 form.FormType = EffectForm.EffectFormType.TemporaryHitPoints;
                 form.temporaryHitPointsForm.diceNumber = i - 1;
                 form.temporaryHitPointsForm.dieType = RuleDefinitions.DieType.D8;
-                form.applyAbilityBonus = true;
+                form.addBonusMode = RuleDefinitions.AddBonusMode.AbilityBonus;
                 effect.EffectForms.Add(form);
                 //effect.effectParticleParameters.casterParticleReference = null;
                 protective_burst_effects.Add(i, effect);
