@@ -61,7 +61,6 @@ namespace SolastaAlchemistClass
         //Propulsion Rune: + 10 feet speed bonus
         //Weapons use int and can be used as a focus
         //At lvl 9: +1 armor / weapon rune
-        //TODO: fast alchemy - create a number of potions with effects of level 1-2 spells
         static public FeatureDefinitionFeatureSet fast_alchemy;
 
         protected AlchemistClassBuilder(string name, string guid) : base(name, guid)
@@ -463,7 +462,7 @@ namespace SolastaAlchemistClass
                                                                                                                                     (s.guiPresentation.title, "")),                                                                                                       
                                                                                         s.guiPresentation.description,
                                                                                         null,
-                                                                                        DatabaseHelper.ItemDefinitions.PotionOfHeroism,
+                                                                                        DatabaseHelper.ItemDefinitions.PotionOfInvisibility,
                                                                                         a =>
                                                                                         {
                                                                                             a.costs = new int[] { 0, 0, 0, 0, 0 };
@@ -494,8 +493,8 @@ namespace SolastaAlchemistClass
                 effect_form.summonForm.effectProxyDefinitionName = "";
                 effect_form.summonForm.number = 1;
                 effect.effectForms.Add(effect_form);
-
-               var power = Helpers.GenericPowerBuilder<NewFeatureDefinitions.LinkedPower>.createPower("FastAlchemyFunctionCreatePotion" + s.name,
+                effect.effectParticleParameters = DatabaseHelper.FeatureDefinitionPowers.PowerFunctionRemedyOther.effectDescription.effectParticleParameters;
+                var power = Helpers.GenericPowerBuilder<NewFeatureDefinitions.LinkedPower>.createPower("FastAlchemyFunctionCreatePotion" + s.name,
                                                                             GuidStorage.mergeGuids(s.guid, "6e7865ec-5323-4065-968e-689ffd1bf504"),
                                                                             Helpers.StringProcessing.concatenateStrings($"Feature/&AlchemistClassFastAlchemyCreatePotion{s.name}Title",
                                                                                                                                     ("Feature/&AlchemistClassFastAlchemyFeatureSetTitle", ": "),
@@ -511,6 +510,7 @@ namespace SolastaAlchemistClass
                                                                             Helpers.Stats.Intelligence);
                 power.linkedPower = base_fast_alchemy;
                 fast_alchemy.featureSet.Add(power);
+                power.showCasting = false;
             }
         }
 
