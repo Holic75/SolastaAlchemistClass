@@ -61,6 +61,8 @@ namespace SolastaAlchemistClass
         //Propulsion Rune: + 10 feet speed bonus
         //Weapons use int and can be used as a focus
         //At lvl 9: +1 armor / weapon rune
+        //TODO: fast alchemy - create a number of potions with effects of level 1-2 spells
+        static public FeatureDefinitionFeatureSet fast_alchemy;
 
         protected AlchemistClassBuilder(string name, string guid) : base(name, guid)
         {
@@ -201,32 +203,32 @@ namespace SolastaAlchemistClass
                                                                                 },
                                                                                 new List<SpellDefinition>
                                                                                 {
-                                                                                    DatabaseHelper.SpellDefinitions.CureWounds,
+                                                                                    DatabaseHelper.SpellDefinitions.CureWounds, //
                                                                                     DatabaseHelper.SpellDefinitions.DetectMagic,
                                                                                     DatabaseHelper.SpellDefinitions.ExpeditiousRetreat,
                                                                                     DatabaseHelper.SpellDefinitions.FaerieFire,
-                                                                                    DatabaseHelper.SpellDefinitions.FalseLife,
+                                                                                    DatabaseHelper.SpellDefinitions.FalseLife, //
                                                                                     DatabaseHelper.SpellDefinitions.FeatherFall,
                                                                                     DatabaseHelper.SpellDefinitions.Grease,
                                                                                     DatabaseHelper.SpellDefinitions.Identify,
-                                                                                    DatabaseHelper.SpellDefinitions.Jump,
-                                                                                    DatabaseHelper.SpellDefinitions.Longstrider,
+                                                                                    DatabaseHelper.SpellDefinitions.Jump, //
+                                                                                    DatabaseHelper.SpellDefinitions.Longstrider, //
                                                                                     //
                                                                                 },
                                                                                 new List<SpellDefinition>
                                                                                 {
-                                                                                    DatabaseHelper.SpellDefinitions.Aid,
-                                                                                    DatabaseHelper.SpellDefinitions.Blur,
-                                                                                    DatabaseHelper.SpellDefinitions.Darkvision,
-                                                                                    DatabaseHelper.SpellDefinitions.EnhanceAbility,
+                                                                                    DatabaseHelper.SpellDefinitions.Aid, //
+                                                                                    DatabaseHelper.SpellDefinitions.Blur, //?
+                                                                                    DatabaseHelper.SpellDefinitions.Darkvision, //
+                                                                                    DatabaseHelper.SpellDefinitions.EnhanceAbility, //?
                                                                                     DatabaseHelper.SpellDefinitions.HeatMetal,
-                                                                                    DatabaseHelper.SpellDefinitions.Invisibility,
-                                                                                    DatabaseHelper.SpellDefinitions.Levitate,
-                                                                                    DatabaseHelper.SpellDefinitions.LesserRestoration,
+                                                                                    DatabaseHelper.SpellDefinitions.Invisibility, //?
+                                                                                    DatabaseHelper.SpellDefinitions.Levitate, //?
+                                                                                    DatabaseHelper.SpellDefinitions.LesserRestoration, //
                                                                                     DatabaseHelper.SpellDefinitions.MagicWeapon,
-                                                                                    DatabaseHelper.SpellDefinitions.ProtectionFromPoison,
-                                                                                    DatabaseHelper.SpellDefinitions.SeeInvisibility,
-                                                                                    DatabaseHelper.SpellDefinitions.SpiderClimb
+                                                                                    DatabaseHelper.SpellDefinitions.ProtectionFromPoison, //
+                                                                                    DatabaseHelper.SpellDefinitions.SeeInvisibility, //
+                                                                                    DatabaseHelper.SpellDefinitions.SpiderClimb //?
                                                                                 },
                                                                                 new List<SpellDefinition>
                                                                                 {
@@ -297,6 +299,7 @@ namespace SolastaAlchemistClass
             createCraftingExpertise();
             createCraftingAdept();
             createFlashOfGenius();
+            createFastAlchemy();
             Definition.FeatureUnlocks.Clear();
             Definition.FeatureUnlocks.Add(new FeatureUnlockByLevel(saving_throws, 1));
             Definition.FeatureUnlocks.Add(new FeatureUnlockByLevel(armor_proficiency, 1));
@@ -316,6 +319,7 @@ namespace SolastaAlchemistClass
             Definition.FeatureUnlocks.Add(new FeatureUnlockByLevel(mutagen_selection, 8)); //6
             Definition.FeatureUnlocks.Add(new FeatureUnlockByLevel(mutagen_selection, 10)); //7
             Definition.FeatureUnlocks.Add(new FeatureUnlockByLevel(crafting_adept, 10));
+            Definition.FeatureUnlocks.Add(new FeatureUnlockByLevel(fast_alchemy, 11));
             Definition.FeatureUnlocks.Add(new FeatureUnlockByLevel(DatabaseHelper.FeatureDefinitionFeatureSets.FeatureSetAbilityScoreChoice, 12));
             Definition.FeatureUnlocks.Add(new FeatureUnlockByLevel(mutagen_selection, 12)); //8
             Definition.FeatureUnlocks.Add(new FeatureUnlockByLevel(mutagen_selection, 14)); //9
@@ -342,6 +346,172 @@ namespace SolastaAlchemistClass
             {
                 item.RequiredAttunementClasses.Add(alchemist_class);
             };
+        }
+
+
+        static void createFastAlchemy()
+        {
+            string potion_image_path = $@"{UnityModManagerNet.UnityModManager.modsPath}/SolastaAlchemistClass/Sprites/SwiftAlchemy.png";
+
+            var base_fast_alchemy = Helpers.GenericPowerBuilder<NewFeatureDefinitions.HiddenPower>
+                                       .createPower("AlchemistClassFastAlchemyBasePower",
+                                                       "",
+                                                       "Feature/&AlchemistClassFastAlchemyFeatureSetTitle",
+                                                       Common.common_no_title,
+                                                       Common.common_no_icon,
+                                                       DatabaseHelper.FeatureDefinitionPowers.PowerDomainElementalFireBurst.effectDescription,
+                                                       RuleDefinitions.ActivationTime.Action,
+                                                       4,
+                                                       RuleDefinitions.UsesDetermination.AbilityBonusPlusFixed,
+                                                       RuleDefinitions.RechargeRate.LongRest,
+                                                       Helpers.Stats.Intelligence,
+                                                       Helpers.Stats.Intelligence,
+                                                       1,
+                                                       true
+                                                       );
+            base_fast_alchemy.guiPresentation.hidden = true;
+
+            fast_alchemy = Helpers.FeatureSetBuilder.createFeatureSet("AlchemistClassFastAlchemyFeatureSet",
+                                                                        "",
+                                                                        "Feature/&AlchemistClassFastAlchemyFeatureSetTitle",
+                                                                        "Feature/&AlchemistClassFastAlchemyFeatureSetDescription",
+                                                                        false,
+                                                                        FeatureDefinitionFeatureSet.FeatureSetMode.Union,
+                                                                        false,
+                                                                        base_fast_alchemy
+                                                                        );
+
+
+
+            var spells = new List<SpellDefinition>
+            {
+                DatabaseHelper.SpellDefinitions.CureWounds,
+                DatabaseHelper.SpellDefinitions.DetectMagic,
+                DatabaseHelper.SpellDefinitions.FalseLife,
+                DatabaseHelper.SpellDefinitions.Jump,
+                DatabaseHelper.SpellDefinitions.Longstrider,
+                DatabaseHelper.SpellDefinitions.Darkvision,
+                DatabaseHelper.SpellDefinitions.LesserRestoration,
+                DatabaseHelper.SpellDefinitions.ProtectionFromPoison,
+                DatabaseHelper.SpellDefinitions.SeeInvisibility,
+            };
+
+            foreach (var s in spells)
+            {
+                var potion_effect = new EffectDescription();
+                potion_effect.Copy(s.effectDescription);
+                potion_effect.rangeType = RuleDefinitions.RangeType.Self;
+                potion_effect.targetType = RuleDefinitions.TargetType.Self;
+                potion_effect.rangeParameter = 1;
+                potion_effect.targetParameter = 1;
+                potion_effect.effectAdvancement.Clear();
+                if (s == DatabaseHelper.SpellDefinitions.CureWounds)
+                {
+                    potion_effect.effectForms.Clear();
+                    var eff = new EffectForm();
+                    eff.formType = EffectForm.EffectFormType.Healing;
+                    eff.createdByCharacter = true;
+                    eff.healingForm = new HealingForm();
+                    eff.healingForm.bonusHealing = 5;
+                    eff.healingForm.diceNumber = 2;
+                    eff.healingForm.dieType = RuleDefinitions.DieType.D8;
+                    potion_effect.effectForms.Add(eff);
+                }
+                else if (s == DatabaseHelper.SpellDefinitions.FalseLife)
+                {
+                    potion_effect.effectForms.Clear();
+                    var eff = new EffectForm();
+                    eff.formType = EffectForm.EffectFormType.TemporaryHitPoints;
+                    eff.createdByCharacter = true;
+                    eff.temporaryHitPointsForm = new TemporaryHitPointsForm();
+                    eff.temporaryHitPointsForm.bonusHitPoints = 9;
+                    eff.temporaryHitPointsForm.diceNumber = 1;
+                    eff.temporaryHitPointsForm.dieType = RuleDefinitions.DieType.D4;
+                    potion_effect.effectForms.Add(eff);
+                }
+
+                
+                var output_path = $@"{UnityModManagerNet.UnityModManager.modsPath}/SolastaAlchemistClass/Sprites/SwiftAlchemy{s.name}.png";
+                if (!System.IO.File.Exists(output_path))
+                {
+                    var spell_icon_path = $@"{UnityModManagerNet.UnityModManager.modsPath}/SolastaAlchemistClass/Sprites/{s.name}.png";
+                    SolastaModHelpers.CustomIcons.Tools.saveSpriteFromAssetReferenceAsPNG(s.GuiPresentation.SpriteReference, spell_icon_path);
+                    SolastaModHelpers.CustomIcons.Tools.merge2Images(new string[] { potion_image_path, spell_icon_path }, (128, 64), output_path);
+                    System.IO.File.Delete(spell_icon_path);
+                }
+                var power_image = SolastaModHelpers.CustomIcons.Tools.storeCustomIcon($"SwiftAlchemy{s.name}Image",
+                                                                                      output_path,
+                                                                                      128, 64);
+
+                var potion_power = Helpers.GenericPowerBuilder<FeatureDefinitionPower>.createPower("FastAlchemyPotionFunctionPower" + s.name,
+                                                                                            GuidStorage.mergeGuids(s.guid, "edcb2a48-70ea-4818-bfa2-40c9e7527a90"),
+                                                                                            s.guiPresentation.title,
+                                                                                            s.guiPresentation.description,
+                                                                                            s.guiPresentation.spriteReference,
+                                                                                            potion_effect,
+                                                                                            RuleDefinitions.ActivationTime.Action,
+                                                                                            1,
+                                                                                            RuleDefinitions.UsesDetermination.Fixed,
+                                                                                            RuleDefinitions.RechargeRate.None,
+                                                                                            show_casting: false);
+
+                //TODO: items ideally also require custom icons
+                var item = Helpers.CopyFeatureBuilder<ItemDefinition>.createFeatureCopy("FastAlchemyPotion" + s.name,
+                                                                                        GuidStorage.mergeGuids(s.guid, "8aa17aa7-6832-4412-a55e-f1187ad9908c"),
+                                                                                        Helpers.StringProcessing.concatenateStrings($"Feature/&AlchemistClassFastAlchemyPotion{s.name}Title",
+                                                                                                                                    ("Feature/&AlchemistClassFastAlchemyPotionTitle", " "),
+                                                                                                                                    (s.guiPresentation.title, "")),                                                                                                       
+                                                                                        s.guiPresentation.description,
+                                                                                        null,
+                                                                                        DatabaseHelper.ItemDefinitions.PotionOfHeroism,
+                                                                                        a =>
+                                                                                        {
+                                                                                            a.costs = new int[] { 0, 0, 0, 0, 0 };
+                                                                                            a.usableDeviceDescription.deviceFunctions = new List<DeviceFunctionDescription>
+                                                                                            {
+                                                                                                new DeviceFunctionDescription(a.usableDeviceDescription.deviceFunctions[0])
+                                                                                                {
+                                                                                                    type = DeviceFunctionDescription.FunctionType.Power,
+                                                                                                    useAmount = 1,
+                                                                                                    featureDefinitionPower = potion_power
+                                                                                                }
+                                                                                            };
+                                                                                            a.requiresIdentification = false;
+                                                                                        }
+                                                                                        );
+                NewFeatureDefinitions.ItemsData.items_to_remove_on_long_rest.Add(item);
+
+                var effect = new EffectDescription();
+                effect.Copy(DatabaseHelper.SpellDefinitions.Goodberry.effectDescription);
+                effect.effectForms.Clear();
+                var effect_form = new EffectForm();
+                effect_form.formType = EffectForm.EffectFormType.Summon;
+                effect_form.createdByCharacter = true;
+                effect_form.summonForm = new SummonForm();
+                effect_form.summonForm.summonType = SummonForm.Type.InventoryItem;
+                effect_form.summonForm.itemDefinition = item;
+                effect_form.summonForm.monsterDefinitionName = "Acolyte";
+                effect_form.summonForm.effectProxyDefinitionName = "";
+                effect_form.summonForm.number = 1;
+                effect.effectForms.Add(effect_form);
+
+               var power = Helpers.GenericPowerBuilder<NewFeatureDefinitions.LinkedPower>.createPower("FastAlchemyFunctionCreatePotion" + s.name,
+                                                                            GuidStorage.mergeGuids(s.guid, "6e7865ec-5323-4065-968e-689ffd1bf504"),
+                                                                            Helpers.StringProcessing.concatenateStrings($"Feature/&AlchemistClassFastAlchemyCreatePotion{s.name}Title",
+                                                                                                                                    ("Feature/&AlchemistClassFastAlchemyFeatureSetTitle", ": "),
+                                                                                                                                    (s.guiPresentation.title, "")),
+                                                                            s.guiPresentation.description,
+                                                                            power_image,//DatabaseHelper.ItemDefinitions.PotionOfHeroism.GuiPresentation.spriteReference,
+                                                                            effect,
+                                                                            RuleDefinitions.ActivationTime.Action,
+                                                                            4,
+                                                                            RuleDefinitions.UsesDetermination.AbilityBonusPlusFixed,
+                                                                            RuleDefinitions.RechargeRate.LongRest,
+                                                                            Helpers.Stats.Intelligence,
+                                                                            Helpers.Stats.Intelligence);
+                power.linkedPower = base_fast_alchemy;
+                fast_alchemy.featureSet.Add(power);
+            }
         }
 
 
