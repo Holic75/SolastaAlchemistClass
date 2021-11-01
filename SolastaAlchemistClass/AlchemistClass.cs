@@ -292,6 +292,7 @@ namespace SolastaAlchemistClass
                                                                                                                                         new List<int> { 4, 3, 3, 3, 2 }//20
                                                                                                                                         )
                                                                                                     );
+            alchemist_spellcasting.focusType = EquipmentDefinitions.FocusType.Arcane;
             createMutagen();
             createCraftingExpertise();
             createCraftingAdept();
