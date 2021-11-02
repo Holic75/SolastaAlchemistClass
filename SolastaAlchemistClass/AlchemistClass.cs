@@ -1450,7 +1450,7 @@ namespace SolastaAlchemistClass
             var gui_presentation = new GuiPresentationBuilder(
                     "Subclass/&AlchemistSubclassSpecializationGrenadierDescription",
                     "Subclass/&AlchemistSubclassSpecializationGrenadierTitle")
-                    .SetSpriteReference(DatabaseHelper.CharacterSubclassDefinitions.TraditionShockArcanist.GuiPresentation.SpriteReference)
+                    .SetSpriteReference(DatabaseHelper.CharacterSubclassDefinitions.PathMagebane.GuiPresentation.SpriteReference)
                     .Build();
 
             CharacterSubclassDefinition definition = new CharacterSubclassDefinitionBuilder("AlchemistSubclassSpecializationGrenadier", "7cee2f03-145b-447c-be2f-5637d56b6818")
