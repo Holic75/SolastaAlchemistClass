@@ -385,7 +385,6 @@ namespace SolastaAlchemistClass
             var spells = new List<SpellDefinition>
             {
                 DatabaseHelper.SpellDefinitions.CureWounds,
-                DatabaseHelper.SpellDefinitions.DetectMagic,
                 DatabaseHelper.SpellDefinitions.FalseLife,
                 DatabaseHelper.SpellDefinitions.Jump,
                 DatabaseHelper.SpellDefinitions.Longstrider,
